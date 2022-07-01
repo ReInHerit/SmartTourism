@@ -12,3 +12,4 @@
 /.gradle/
 /.idea/
 /models/src/main/assets/databases/
+/models/build/intermediates/library_assets/debug/out/databases/database.sqlite
