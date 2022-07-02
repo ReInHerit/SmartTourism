@@ -1,4 +1,4 @@
-package org.tensorflow.lite.examples.classification;
+package org.tensorflow.lite.examples.classification.tflite;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -80,5 +80,20 @@ public class DatabaseAccess {
         }
         cursor.close();
         return list;
+    }
+
+    public List<String> getFeatures() {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT * FROM Matrix WHERE rowid < (SELECT COUNT(*) FROM Matrix)/10", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+
+
+        //TODO Query restituisce troppe righe, prova a rifare struttura db (id,style,color,matrice)
     }
 }

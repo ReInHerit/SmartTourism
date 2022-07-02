@@ -103,6 +103,8 @@ public abstract class Classifier {
   /** Processer to apply post processing of the output probability. */
   private final TensorProcessor probabilityProcessor;
 
+  private Retrievor retrievor;
+
   /**
    * Creates a classifier with the provided configuration.
    *
@@ -114,6 +116,7 @@ public abstract class Classifier {
    */
   public static Classifier create(Activity activity, Model model, Device device, int numThreads)
       throws IOException {
+
     if (model == Model.QUANTIZED_MOBILENET) {
       return new ClassifierQuantizedMobileNet(activity, device, numThreads);
     } else if (model == Model.FLOAT_MOBILENET) {
@@ -199,6 +202,8 @@ public abstract class Classifier {
 
   /** Initializes a {@code Classifier}. */
   protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
+
+    retrievor = new Retrievor(activity);
     MappedByteBuffer tfliteModel = FileUtil.loadMappedFile(activity, getModelPath());
     switch (device) {
       case NNAPI:
@@ -288,8 +293,8 @@ public abstract class Classifier {
      NOTE: MobileNetFloat 1280 Activations
      */
 
-    //Retrievor r = new Retrievor(CameraActivity.this);
-
+    PriorityQueue result = retrievor.getNearest(features);
+    //return (List<Recognition>) result;
 
     // Gets the map of label and probability.
     Map<String, Float> labeledProbability =

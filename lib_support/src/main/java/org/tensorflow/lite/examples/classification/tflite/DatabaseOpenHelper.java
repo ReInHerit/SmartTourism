@@ -1,4 +1,4 @@
-package org.tensorflow.lite.examples.classification;
+package org.tensorflow.lite.examples.classification.tflite;
 
 
 import android.content.Context;
