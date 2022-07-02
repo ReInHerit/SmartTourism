@@ -5,6 +5,8 @@ package org.tensorflow.lite.examples.classification.tflite;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -15,39 +17,19 @@ public class Retrievor {
     private DatabaseAccess databaseAccess;
 
     public Retrievor(Context context){
-        //Database
         databaseAccess = DatabaseAccess.getInstance(context);
-        //databaseAccess.open();
-        //Log.v("Retrievor","Database uploaded.");
-        //List<String> elements = databaseAccess.getElements();
-        //List<String> matrix = databaseAccess.getMatrix(1);
-        //databaseAccess.close();
-
-        //Log.v("Retrievor",elements.toString());
-        //Log.v("Retrievor",matrix.toString());
-
-
     }
 
-    public PriorityQueue getNearest(float[] features) {
-        PriorityQueue pq = new PriorityQueue<Classifier.Recognition>();
-        /* TODO
-            Compute Distance
-            Search Nearest Id
-         */
+    public ArrayList<Element> getNearest(float[] features) {
+
         Log.v("Retrievor","Opening DB");
         databaseAccess.open();
-        Log.v("Retrievor","DB Opened");
-        List<String> featuresFromDB = databaseAccess.getFeatures();
-        Log.v("Retrievor","Closing DB");
+        ArrayList<Element> featuresFromDB = databaseAccess.getFeatureDistance(features);
         databaseAccess.close();
         Log.v("Retrievor","DB Closed");
 
-        for (String x:featuresFromDB) {
-            Log.v("Retrievor",x);
-        }
+        return  featuresFromDB;
 
-        return pq;
     }
 }
 

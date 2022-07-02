@@ -113,7 +113,7 @@ public class ClassifierTest {
         break;
       }
       float probability = scanner.nextFloat();
-      Recognition recognition = new Recognition(null, category, probability, null);
+      Recognition recognition = new Recognition(null, category, (double) probability, null);
       result.add(recognition);
     }
     return result;

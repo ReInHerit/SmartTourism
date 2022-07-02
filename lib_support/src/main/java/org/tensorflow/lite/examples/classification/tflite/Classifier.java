@@ -31,9 +31,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
+
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
 import org.tensorflow.lite.gpu.CompatibilityList;
 import org.tensorflow.lite.gpu.GpuDelegate;
 import org.tensorflow.lite.nnapi.NnApiDelegate;
@@ -46,7 +47,6 @@ import org.tensorflow.lite.support.image.ops.ResizeOp;
 import org.tensorflow.lite.support.image.ops.ResizeOp.ResizeMethod;
 import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp;
 import org.tensorflow.lite.support.image.ops.Rot90Op;
-import org.tensorflow.lite.support.label.TensorLabel;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 /** A classifier specialized to label images using TensorFlow Lite. */
@@ -144,13 +144,13 @@ public abstract class Classifier {
     /**
      * A sortable score for how good the recognition is relative to others. Higher should be better.
      */
-    private final Float confidence;
+    private final Double confidence;
 
     /** Optional location within the source image for the location of the recognized object. */
     private RectF location;
 
     public Recognition(
-        final String id, final String title, final Float confidence, final RectF location) {
+            final String id, final String title, final Double confidence, final RectF location) {
       this.id = id;
       this.title = title;
       this.confidence = confidence;
@@ -165,7 +165,7 @@ public abstract class Classifier {
       return title;
     }
 
-    public Float getConfidence() {
+    public Double getConfidence() {
       return confidence;
     }
 
@@ -280,11 +280,11 @@ public abstract class Classifier {
 
     //Added
     float [] features = outputProbabilityBuffer.getFloatArray();
-    Log.v(TAG,"size (a): "+features.length);
+    //Log.v(TAG,"size (a): "+features.length);
 
-    for (float x : features) {
-      Log.v(TAG, "[]: " +x);
-    }
+    //for (float x : features) {
+    //  Log.v(TAG, "[]: " +x);
+    //}
 
     /* TODO
         Retrievor
@@ -293,13 +293,18 @@ public abstract class Classifier {
      NOTE: MobileNetFloat 1280 Activations
      */
 
-    PriorityQueue result = retrievor.getNearest(features);
+    ArrayList<Element> result = retrievor.getNearest(features);
+    Map<String, Double> labeledProbability = new TreeMap<String, Double>();
+
+    for (Element element:
+         result) {
+      labeledProbability.put(element.getStyle()+element.getColor(), element.getDistance());
+    }
+
+
     //return (List<Recognition>) result;
 
     // Gets the map of label and probability.
-    Map<String, Float> labeledProbability =
-        new TensorLabel(labels, probabilityProcessor.process(outputProbabilityBuffer))
-            .getMapWithFloatValue();
     Trace.endSection();
 
     // Gets top-k results.
@@ -355,7 +360,7 @@ public abstract class Classifier {
   }
 
   /** Gets the top-k results. */
-  private static List<Recognition> getTopKProbability(Map<String, Float> labelProb) {
+  private static List<Recognition> getTopKProbability(Map<String, Double> labelProb) {
     // Find the best classifications.
     PriorityQueue<Recognition> pq =
         new PriorityQueue<>(
@@ -364,11 +369,11 @@ public abstract class Classifier {
               @Override
               public int compare(Recognition lhs, Recognition rhs) {
                 // Intentionally reversed to put high confidence at the head of the queue.
-                return Float.compare(rhs.getConfidence(), lhs.getConfidence());
+                return Double.compare(rhs.getConfidence(), lhs.getConfidence());
               }
             });
 
-    for (Map.Entry<String, Float> entry : labelProb.entrySet()) {
+    for (Map.Entry<String, Double> entry : labelProb.entrySet()) {
       pq.add(new Recognition("" + entry.getKey(), entry.getKey(), entry.getValue(), null));
     }
 

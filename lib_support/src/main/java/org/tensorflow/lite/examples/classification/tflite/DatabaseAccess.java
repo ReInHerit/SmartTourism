@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
@@ -82,18 +84,42 @@ public class DatabaseAccess {
         return list;
     }
 
-    public List<String> getFeatures() {
-        List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM Matrix WHERE rowid < (SELECT COUNT(*) FROM Matrix)/10", null);
+    public ArrayList<Element> getFeatureDistance(float[] features) {
+        ArrayList<Element> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT * FROM AllInOne WHERE rowid < (SELECT COUNT(*) FROM AllInOne)/10", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            list.add(cursor.getString(0));
+            String style = cursor.getString(0);
+            String color =cursor.getString(1);
+            String matrix = cursor.getString(2);
+
+            //Convert matrix string to Float
+            String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
+            ArrayList<Float> listMatrix = new ArrayList<Float>();
+
+            for (String s: splitted
+                 ) {
+                listMatrix.add(Float.parseFloat(s));
+            }
+
+            //Calculate Distance
+            double distance = euclideanDistance(features,listMatrix);
+
+            Element e = new Element(style,color,distance);
+            list.add(e);
+
             cursor.moveToNext();
         }
         cursor.close();
         return list;
 
+    }
 
-        //TODO Query restituisce troppe righe, prova a rifare struttura db (id,style,color,matrice)
+    private double euclideanDistance(float[] a, ArrayList<Float> b) {
+        double diff_square_sum = 0.0;
+        for (int i = 0; i < b.size(); i++) {
+            diff_square_sum += (a[i] - b.get(i)) * (a[i] - b.get(i));
+        }
+        return Math.sqrt(diff_square_sum);
     }
 }
