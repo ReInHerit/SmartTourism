@@ -280,29 +280,14 @@ public abstract class Classifier {
 
     //Added
     float [] features = outputProbabilityBuffer.getFloatArray();
-    //Log.v(TAG,"size (a): "+features.length);
-
-    //for (float x : features) {
-    //  Log.v(TAG, "[]: " +x);
-    //}
-
-    /* TODO
-        Retrievor
-        Compute Distance
-        Search Nearest Id
-     NOTE: MobileNetFloat 1280 Activations
-     */
 
     ArrayList<Element> result = retrievor.getNearest(features);
     Map<String, Double> labeledProbability = new TreeMap<String, Double>();
 
     for (Element element:
          result) {
-      labeledProbability.put(element.getStyle()+element.getColor(), element.getDistance());
+      labeledProbability.put(element.getStyle()+" "+element.getColor(), (Double) element.getDistance());
     }
-
-
-    //return (List<Recognition>) result;
 
     // Gets the map of label and probability.
     Trace.endSection();
@@ -368,8 +353,8 @@ public abstract class Classifier {
             new Comparator<Recognition>() {
               @Override
               public int compare(Recognition lhs, Recognition rhs) {
-                // Intentionally reversed to put high confidence at the head of the queue.
-                return Double.compare(rhs.getConfidence(), lhs.getConfidence());
+                // Intentionally re-(from me)reversed to put high confidence at the head of the queue.
+                return Double.compare(lhs.getConfidence(), rhs.getConfidence());
               }
             });
 

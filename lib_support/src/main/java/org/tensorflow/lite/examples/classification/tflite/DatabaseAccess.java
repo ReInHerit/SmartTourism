@@ -14,6 +14,7 @@ public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
+    private static ArrayList<Element> listDB = new ArrayList<>();
 
     /**
      * Private constructor to aboid object creation from outside classes.
@@ -35,6 +36,10 @@ public class DatabaseAccess {
             instance = new DatabaseAccess(context);
         }
         return instance;
+    }
+
+    public static ArrayList<Element> getListDB() {
+        return listDB;
     }
 
     /**
@@ -84,6 +89,7 @@ public class DatabaseAccess {
         return list;
     }
 
+    /*
     public ArrayList<Element> getFeatureDistance(float[] features) {
         ArrayList<Element> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT * FROM AllInOne WHERE rowid < (SELECT COUNT(*) FROM AllInOne)/10", null);
@@ -114,12 +120,37 @@ public class DatabaseAccess {
         return list;
 
     }
+     */
 
-    private double euclideanDistance(float[] a, ArrayList<Float> b) {
-        double diff_square_sum = 0.0;
-        for (int i = 0; i < b.size(); i++) {
-            diff_square_sum += (a[i] - b.get(i)) * (a[i] - b.get(i));
+    public void updateDatabase() {
+        database.isOpen();
+        listDB = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT * FROM AllInOne WHERE rowid < (SELECT COUNT(*) FROM AllInOne)/5", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String style = cursor.getString(0);
+            String color =cursor.getString(1);
+            String matrix = cursor.getString(2);
+
+            //Convert matrix string to Float
+            String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
+            ArrayList<Float> listMatrix = new ArrayList<Float>();
+
+            for (String s: splitted
+            ) {
+                listMatrix.add(Float.parseFloat(s));
+            }
+
+            //element with converted matrix
+            Element e = new Element(style,color,listMatrix,-1);
+            listDB.add(e);
+
+            cursor.moveToNext();
         }
-        return Math.sqrt(diff_square_sum);
+        cursor.close();
+
     }
+
+
+
 }

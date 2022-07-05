@@ -3,12 +3,7 @@ package org.tensorflow.lite.examples.classification.tflite;
 
 
 import android.content.Context;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
 
 
 public class Retrievor {
@@ -18,18 +13,31 @@ public class Retrievor {
 
     public Retrievor(Context context){
         databaseAccess = DatabaseAccess.getInstance(context);
+        databaseAccess.open();
+        databaseAccess.updateDatabase();
+        databaseAccess.close();
     }
 
-    public ArrayList<Element> getNearest(float[] features) {
+    public ArrayList<Element> getNearest(float[] imgFeatures) {
+        ArrayList<Element> list = new ArrayList<Element>();
 
-        Log.v("Retrievor","Opening DB");
-        databaseAccess.open();
-        ArrayList<Element> featuresFromDB = databaseAccess.getFeatureDistance(features);
-        databaseAccess.close();
-        Log.v("Retrievor","DB Closed");
+        for (Element element:databaseAccess.getListDB()) {
+            double distance = euclideanDistance(imgFeatures,element.getMatrix());
 
-        return  featuresFromDB;
+            Element e = new Element(element.getStyle(),element.getColor(),element.getMatrix(),distance);
+            list.add(e);
+        }
+        return  list;
 
+    }
+
+
+    private double euclideanDistance(float[] a, ArrayList<Float> b) {
+        double diff_square_sum = 0.0;
+        for (int i = 0; i < b.size(); i++) {
+            diff_square_sum += (a[i] - b.get(i)) * (a[i] - b.get(i));
+        }
+        return Math.sqrt(diff_square_sum);
     }
 }
 
