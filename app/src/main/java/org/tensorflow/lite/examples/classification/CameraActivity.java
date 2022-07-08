@@ -35,6 +35,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.View;
@@ -50,7 +52,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.tensorflow.lite.examples.classification.env.ImageUtils;
 import org.tensorflow.lite.examples.classification.env.Logger;
 import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
@@ -526,27 +533,44 @@ public abstract class CameraActivity extends AppCompatActivity
   protected void showResultsInBottomSheet(List<Recognition> results) {
     if (results != null && results.size() >= 3) {
       Recognition recognition = results.get(0);
+      Recognition recognition1 = results.get(1);
+      Recognition recognition2 = results.get(2);
+
+      //TODO puo essere ottimizzato, scorrendo solo una volta la lista
+      /*int n = 10;
+      List<Recognition> out = results.subList(0, 9);
+
+      Log.v("Result",out.toString());
+
+      recognition.setConfidence((double) Collections.frequency(out, recognition));
+      recognition1.setConfidence((double) Collections.frequency(out, recognition1));
+      recognition2.setConfidence((double) Collections.frequency(out, recognition2));
+      */
       if (recognition != null) {
         if (recognition.getTitle() != null) recognitionTextView.setText(recognition.getTitle());
         if (recognition.getConfidence() != null)
           recognitionValueTextView.setText(
-              String.format("%.2f", (100 * recognition.getConfidence())) + "%");
+              //String.format("%.2f", (100 * recognition.getConfidence())) + "%"
+                recognition.getConfidence().toString()
+          );
       }
 
-      Recognition recognition1 = results.get(1);
       if (recognition1 != null) {
         if (recognition1.getTitle() != null) recognition1TextView.setText(recognition1.getTitle());
         if (recognition1.getConfidence() != null)
           recognition1ValueTextView.setText(
-              String.format("%.2f", (100 * recognition1.getConfidence())) + "%");
+              //String.format("%.2f", (100 * recognition1.getConfidence())) + "%"
+                  recognition1.getConfidence().toString()
+          );
       }
 
-      Recognition recognition2 = results.get(2);
       if (recognition2 != null) {
         if (recognition2.getTitle() != null) recognition2TextView.setText(recognition2.getTitle());
         if (recognition2.getConfidence() != null)
           recognition2ValueTextView.setText(
-              String.format("%.2f", (100 * recognition2.getConfidence())) + "%");
+              //String.format("%.2f", (100 * recognition2.getConfidence())) + "%"
+                  recognition2.getConfidence().toString()
+          );
       }
     }
   }

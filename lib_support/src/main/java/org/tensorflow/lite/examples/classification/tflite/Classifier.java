@@ -144,13 +144,13 @@ public abstract class Classifier {
     /**
      * A sortable score for how good the recognition is relative to others. Higher should be better.
      */
-    private final Double confidence;
+    private Double confidence;
 
     /** Optional location within the source image for the location of the recognized object. */
     private RectF location;
 
     public Recognition(
-            final String id, final String title, final Double confidence, final RectF location) {
+            final String id, final String title, Double confidence, final RectF location) {
       this.id = id;
       this.title = title;
       this.confidence = confidence;
@@ -167,6 +167,10 @@ public abstract class Classifier {
 
     public Double getConfidence() {
       return confidence;
+    }
+
+    public void setConfidence(Double confidence) {
+      this.confidence=confidence;
     }
 
     public RectF getLocation() {

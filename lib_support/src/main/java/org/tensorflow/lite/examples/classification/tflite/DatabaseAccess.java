@@ -122,32 +122,37 @@ public class DatabaseAccess {
     }
      */
 
-    public void updateDatabase() {
+    public void updateDatabase(int k) {
         database.isOpen();
         listDB = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM AllInOne WHERE rowid < (SELECT COUNT(*) FROM AllInOne)/5", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String style = cursor.getString(0);
-            String color =cursor.getString(1);
-            String matrix = cursor.getString(2);
+        for (int i = 0; i<k; i++){
+            Log.v("DatabaseAccess", "id from "+i+"/"+k+" to "+(i+1)+"/"+k);
+            Cursor cursor = database.rawQuery("SELECT * FROM AllInOne " +
+                    "WHERE rowid > "+i+" * (SELECT COUNT(*) FROM AllInOne)/"+k+" AND rowid <= ("+i+"+1) * (SELECT COUNT(*) FROM AllInOne)/"+k, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String style = cursor.getString(0);
+                String color =cursor.getString(1);
+                String matrix = cursor.getString(2);
 
-            //Convert matrix string to Float
-            String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
-            ArrayList<Float> listMatrix = new ArrayList<Float>();
+                //Convert matrix string to Float
+                String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
+                ArrayList<Float> listMatrix = new ArrayList<Float>();
 
-            for (String s: splitted
-            ) {
-                listMatrix.add(Float.parseFloat(s));
+                for (String s: splitted
+                ) {
+                    listMatrix.add(Float.parseFloat(s));
+                }
+
+                //element with converted matrix
+                Element e = new Element(style,color,listMatrix,-1);
+                listDB.add(e);
+
+                cursor.moveToNext();
             }
-
-            //element with converted matrix
-            Element e = new Element(style,color,listMatrix,-1);
-            listDB.add(e);
-
-            cursor.moveToNext();
+            cursor.close();
         }
-        cursor.close();
+
 
     }
 

@@ -14,7 +14,7 @@ public class Retrievor {
     public Retrievor(Context context){
         databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
-        databaseAccess.updateDatabase();
+        databaseAccess.updateDatabase(5);
         databaseAccess.close();
     }
 
