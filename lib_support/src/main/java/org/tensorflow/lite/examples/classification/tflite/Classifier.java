@@ -20,6 +20,7 @@ import static java.lang.Math.min;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.SystemClock;
 import android.os.Trace;
 import android.util.Log;
@@ -286,6 +287,23 @@ public abstract class Classifier {
     float [] features = outputProbabilityBuffer.getFloatArray();
 
     ArrayList<Element> result = retrievor.getNearest(features);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      result.sort(new Comparator<Element>() {
+        @Override
+        public int compare(Element lhs, Element rhs) {
+          return Double.compare(lhs.getDistance(),rhs.getDistance());
+        }
+      });
+
+      Log.v("Recognitions",result.toString());
+
+    }
+
+
+
+
+
     Map<String, Double> labeledProbability = new TreeMap<String, Double>();
 
     for (Element element:
@@ -340,8 +358,10 @@ public abstract class Classifier {
             .add(new ResizeWithCropOrPadOp(cropSize, cropSize))
             // TODO(b/169379396): investigate the impact of the resize algorithm on accuracy.
             // To get the same inference results as lib_task_api, which is built on top of the Task
-            // Library, use ResizeMethod.BILINEAR.
+            // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
             .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
+                //.add(new ResizeOp(244, 244, ResizeMethod.NEAREST_NEIGHBOR))
+
             .add(new Rot90Op(numRotation))
             .add(getPreprocessNormalizeOp())
             .build();
@@ -371,6 +391,8 @@ public abstract class Classifier {
     for (int i = 0; i < recognitionsSize; ++i) {
       recognitions.add(pq.poll());
     }
+
+    //Log.v("Recognitions",recognitions.toString());
     return recognitions;
   }
 

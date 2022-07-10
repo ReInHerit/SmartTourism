@@ -29,4 +29,13 @@ public class Element {
     }
 
     public ArrayList<Float> getMatrix(){ return matrix;}
+
+    @Override
+    public String toString() {
+        return "Element{" +
+                "style='" + style + '\'' +
+                ", color='" + color + '\'' +
+                ", distance=" + distance +
+                '}';
+    }
 }
