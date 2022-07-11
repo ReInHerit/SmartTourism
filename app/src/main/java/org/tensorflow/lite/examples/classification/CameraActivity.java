@@ -115,8 +115,6 @@ public abstract class CameraActivity extends AppCompatActivity
     super.onCreate(null);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-    //Retrievor r = new Retrievor(CameraActivity.this);
-
     setContentView(R.layout.tfe_ic_activity_camera);
 
     if (hasPermission()) {

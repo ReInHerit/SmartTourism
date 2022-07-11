@@ -53,6 +53,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 /** A classifier specialized to label images using TensorFlow Lite. */
 public abstract class Classifier {
   public static final String TAG = "ClassifierWithSupport";
+  private static final int K_TOP_RESULT = 10;
 
   /** The model type used for classification. */
   public enum Model {
@@ -244,6 +245,7 @@ public abstract class Classifier {
     int[] imageShape = tflite.getInputTensor(imageTensorIndex).shape(); // {1, height, width, 3}
     imageSizeY = imageShape[1];
     imageSizeX = imageShape[2];
+
     DataType imageDataType = tflite.getInputTensor(imageTensorIndex).dataType();
     int probabilityTensorIndex = 0;
     int[] probabilityShape =
@@ -253,11 +255,15 @@ public abstract class Classifier {
     // Creates the input tensor.
     inputImageBuffer = new TensorImage(imageDataType);
 
+
     // Creates the output tensor and its processor.
     outputProbabilityBuffer = TensorBuffer.createFixedSize(probabilityShape, probabilityDataType);
 
+
     // Creates the post processor for the output probability.
     probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
+
+
 
     Log.d(TAG, "Created a Tensorflow Lite Image Classifier.");
   }
@@ -270,6 +276,8 @@ public abstract class Classifier {
     Trace.beginSection("loadImage");
     long startTimeForLoadImage = SystemClock.uptimeMillis();
     inputImageBuffer = loadImage(bitmap, sensorOrientation);
+
+
     long endTimeForLoadImage = SystemClock.uptimeMillis();
     Trace.endSection();
     Log.v(TAG, "Timecost to load the image: " + (endTimeForLoadImage - startTimeForLoadImage));
@@ -296,26 +304,24 @@ public abstract class Classifier {
         }
       });
 
-      Log.v("Recognitions",result.toString());
+      //Log.v("Recognitions myResult: ",result.toString());
 
     }
 
 
 
 
-
-    Map<String, Double> labeledProbability = new TreeMap<String, Double>();
-
-    for (Element element:
-         result) {
-      labeledProbability.put(element.getStyle()+" "+element.getColor(), (Double) element.getDistance());
-    }
-
-    // Gets the map of label and probability.
     Trace.endSection();
 
     // Gets top-k results.
-    return getTopKProbability(labeledProbability);
+    Map<String, Double> labeledDistance = createMap(result);
+    List<Recognition> finalResult = getTopKProbability(labeledDistance);
+
+
+    Log.v(TAG,"firstResult: "+result.toString());
+    Log.v(TAG,"finalResult: "+finalResult.toString());
+
+    return finalResult;
   }
 
   /** Closes the interpreter and model to release resources. */
@@ -349,9 +355,12 @@ public abstract class Classifier {
     // Loads bitmap into a TensorImage.
     inputImageBuffer.load(bitmap);
 
+
     // Creates processor for the TensorImage.
     int cropSize = min(bitmap.getWidth(), bitmap.getHeight());
     int numRotation = sensorOrientation / 90;
+
+
     // TODO(b/143564309): Fuse ops inside ImageProcessor.
     ImageProcessor imageProcessor =
         new ImageProcessor.Builder()
@@ -359,13 +368,39 @@ public abstract class Classifier {
             // TODO(b/169379396): investigate the impact of the resize algorithm on accuracy.
             // To get the same inference results as lib_task_api, which is built on top of the Task
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
-            .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
-                //.add(new ResizeOp(244, 244, ResizeMethod.NEAREST_NEIGHBOR))
+            .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
 
             .add(new Rot90Op(numRotation))
-            .add(getPreprocessNormalizeOp())
+            //.add(getPreprocessNormalizeOp())
             .build();
     return imageProcessor.process(inputImageBuffer);
+  }
+
+
+  private static Map<String, Double> createMap(List<Element> results) {
+
+    Map<String, Double> labeledProbability = new TreeMap<String, Double>();
+
+    int size = min(K_TOP_RESULT,results.size());
+
+    for (int i = 0; i < size; i++){
+      Element e = results.get(i);
+      String color = e.getColor();
+      String style = e.getStyle();
+      double distance = e.getDistance();
+
+      String newKey = e.getStyle()+" "+e.getColor();
+
+      if (labeledProbability.containsKey(newKey)){
+        double value = labeledProbability.get(newKey);
+        labeledProbability.put(newKey,(value+e.getDistance())/2);
+
+      }else {
+        labeledProbability.put(newKey, e.getDistance());
+      }
+    }
+
+    return labeledProbability;
   }
 
   /** Gets the top-k results. */
@@ -378,7 +413,7 @@ public abstract class Classifier {
               @Override
               public int compare(Recognition lhs, Recognition rhs) {
                 // Intentionally re-(from me)reversed to put high confidence at the head of the queue.
-                return Double.compare(lhs.getConfidence(), rhs.getConfidence());
+                return Double.compare(lhs.getConfidence(),rhs.getConfidence());
               }
             });
 
@@ -392,7 +427,6 @@ public abstract class Classifier {
       recognitions.add(pq.poll());
     }
 
-    //Log.v("Recognitions",recognitions.toString());
     return recognitions;
   }
 

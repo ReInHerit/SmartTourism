@@ -125,6 +125,7 @@ public class DatabaseAccess {
     public void updateDatabase(int k) {
         database.isOpen();
         listDB = new ArrayList<>();
+        //i<k
         for (int i = 0; i<k; i++){
             Log.v("DatabaseAccess", "id from "+i+"/"+k+" to "+(i+1)+"/"+k);
             Cursor cursor = database.rawQuery("SELECT * FROM AllInOne " +
