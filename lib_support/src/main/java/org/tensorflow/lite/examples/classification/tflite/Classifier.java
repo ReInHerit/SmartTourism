@@ -94,7 +94,7 @@ public abstract class Classifier {
   private final Interpreter.Options tfliteOptions = new Interpreter.Options();
 
   /** Labels corresponding to the output of the vision model. */
-  private final List<String> labels;
+  //private final List<String> labels;
 
   /** Input image TensorBuffer. */
   private TensorImage inputImageBuffer;
@@ -103,7 +103,7 @@ public abstract class Classifier {
   private final TensorBuffer outputProbabilityBuffer;
 
   /** Processer to apply post processing of the output probability. */
-  private final TensorProcessor probabilityProcessor;
+  //private final TensorProcessor probabilityProcessor;
 
   private Retrievor retrievor;
 
@@ -238,7 +238,7 @@ public abstract class Classifier {
     tflite = new Interpreter(tfliteModel, tfliteOptions);
 
     // Loads labels out from the label file.
-    labels = FileUtil.loadLabels(activity, getLabelPath());
+    //labels = FileUtil.loadLabels(activity, getLabelPath());
 
     // Reads type and shape of input and output tensors, respectively.
     int imageTensorIndex = 0;
@@ -261,7 +261,7 @@ public abstract class Classifier {
 
 
     // Creates the post processor for the output probability.
-    probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
+    //probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
 
 
@@ -285,7 +285,7 @@ public abstract class Classifier {
     // Runs the inference call.
     Trace.beginSection("runInference");
     long startTimeForReference = SystemClock.uptimeMillis();
-    tflite.run(inputImageBuffer.getBuffer(), outputProbabilityBuffer.getBuffer().rewind());
+    tflite.run(inputImageBuffer.getBuffer(), outputProbabilityBuffer.getBuffer().rewind()); //RUN INFERENCE
     long endTimeForReference = SystemClock.uptimeMillis();
     Trace.endSection();
     Log.v(TAG, "Timecost to run model inference: " + (endTimeForReference - startTimeForReference));
@@ -308,17 +308,13 @@ public abstract class Classifier {
 
     }
 
-
-
-
-    Trace.endSection();
-
     // Gets top-k results.
     Map<String, Double> labeledDistance = createMap(result);
     List<Recognition> finalResult = getTopKProbability(labeledDistance);
 
+    Trace.endSection();
 
-    Log.v(TAG,"firstResult: "+result.toString());
+    Log.v(TAG,"result: "+result.toString());
     Log.v(TAG,"finalResult: "+finalResult.toString());
 
     return finalResult;
@@ -368,8 +364,8 @@ public abstract class Classifier {
             // TODO(b/169379396): investigate the impact of the resize algorithm on accuracy.
             // To get the same inference results as lib_task_api, which is built on top of the Task
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
-            .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
-
+            //.add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
+            .add(new ResizeOp(224, 224, ResizeMethod.BILINEAR))
             .add(new Rot90Op(numRotation))
             //.add(getPreprocessNormalizeOp())
             .build();
@@ -389,14 +385,17 @@ public abstract class Classifier {
       String style = e.getStyle();
       double distance = e.getDistance();
 
-      String newKey = e.getStyle()+" "+e.getColor();
+      String newKey = style+" "+color;
 
       if (labeledProbability.containsKey(newKey)){
         double value = labeledProbability.get(newKey);
-        labeledProbability.put(newKey,(value+e.getDistance())/2);
+        double newValue = (value*(size-i)+distance*(i))/size; //average with more importance on first positions
+        labeledProbability.put(newKey,newValue);
+
+        //TODO dare piu importanza alle prime non alle ultime
 
       }else {
-        labeledProbability.put(newKey, e.getDistance());
+        labeledProbability.put(newKey, distance);
       }
     }
 

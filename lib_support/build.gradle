@@ -40,8 +40,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
     // Build off of nightly TensorFlow Lite
-    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly-SNAPSHOT'
+    implementation 'org.tensorflow:tensorflow-lite:2.7.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
 
     implementation 'org.tensorflow:tensorflow-lite-support:0.3.0'
 
@@ -49,6 +49,4 @@ dependencies {
     // implementation 'org.tensorflow:tensorflow-lite-local:0.0.0'
 
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
-
-
 }

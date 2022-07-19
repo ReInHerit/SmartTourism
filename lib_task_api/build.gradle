@@ -43,5 +43,5 @@ dependencies {
 
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.3.0'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.3.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.3.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
 }
