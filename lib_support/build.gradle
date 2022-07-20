@@ -31,6 +31,9 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    buildFeatures {
+        mlModelBinding true
+    }
 }
 
 dependencies {
@@ -49,4 +52,5 @@ dependencies {
     // implementation 'org.tensorflow:tensorflow-lite-local:0.0.0'
 
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
 }

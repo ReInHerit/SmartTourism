@@ -19,6 +19,7 @@ import static java.lang.Math.min;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.SystemClock;
@@ -26,6 +27,7 @@ import android.os.Trace;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -53,7 +55,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 /** A classifier specialized to label images using TensorFlow Lite. */
 public abstract class Classifier {
   public static final String TAG = "ClassifierWithSupport";
-  private static final int K_TOP_RESULT = 10;
+  private static final int K_TOP_RESULT = 5;
 
   /** The model type used for classification. */
   public enum Model {
@@ -105,7 +107,7 @@ public abstract class Classifier {
   /** Processer to apply post processing of the output probability. */
   //private final TensorProcessor probabilityProcessor;
 
-  private Retrievor retrievor;
+  private final Retrievor retrievor;
 
   /**
    * Creates a classifier with the provided configuration.
@@ -263,14 +265,13 @@ public abstract class Classifier {
     // Creates the post processor for the output probability.
     //probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
-
-
     Log.d(TAG, "Created a Tensorflow Lite Image Classifier.");
   }
 
   /** Runs inference and returns the classification results. */
   public List<Recognition> recognizeImage(final Bitmap bitmap, int sensorOrientation) {
     // Logs this method so that it can be analyzed with systrace.
+
     Trace.beginSection("recognizeImage");
 
     Trace.beginSection("loadImage");
@@ -314,8 +315,8 @@ public abstract class Classifier {
 
     Trace.endSection();
 
-    Log.v(TAG,"result: "+result.toString());
-    Log.v(TAG,"finalResult: "+finalResult.toString());
+    //Log.v(TAG,"result: "+result.toString());
+    //Log.v(TAG,"finalResult: "+finalResult.toString());
 
     return finalResult;
   }
@@ -349,23 +350,19 @@ public abstract class Classifier {
   /** Loads input image, and applies preprocessing. */
   private TensorImage loadImage(final Bitmap bitmap, int sensorOrientation) {
     // Loads bitmap into a TensorImage.
-    inputImageBuffer.load(bitmap);
-
+    inputImageBuffer.load(bitmap); //image in ARGB_8888
 
     // Creates processor for the TensorImage.
     int cropSize = min(bitmap.getWidth(), bitmap.getHeight());
     int numRotation = sensorOrientation / 90;
 
 
-    // TODO(b/143564309): Fuse ops inside ImageProcessor.
     ImageProcessor imageProcessor =
         new ImageProcessor.Builder()
             .add(new ResizeWithCropOrPadOp(cropSize, cropSize))
-            // TODO(b/169379396): investigate the impact of the resize algorithm on accuracy.
             // To get the same inference results as lib_task_api, which is built on top of the Task
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
-            //.add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
-            .add(new ResizeOp(224, 224, ResizeMethod.BILINEAR))
+            .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
             .add(new Rot90Op(numRotation))
             //.add(getPreprocessNormalizeOp())
             .build();
@@ -389,10 +386,8 @@ public abstract class Classifier {
 
       if (labeledProbability.containsKey(newKey)){
         double value = labeledProbability.get(newKey);
-        double newValue = (value*(size-i)+distance*(i))/size; //average with more importance on first positions
+        double newValue = (value*2+distance)/3; //average with more importance on first positions
         labeledProbability.put(newKey,newValue);
-
-        //TODO dare piu importanza alle prime non alle ultime
 
       }else {
         labeledProbability.put(newKey, distance);

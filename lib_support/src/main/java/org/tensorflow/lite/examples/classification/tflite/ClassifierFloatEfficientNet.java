@@ -52,7 +52,8 @@ public class ClassifierFloatEfficientNet extends Classifier {
     // downloaded into assets.
     //return "efficientnet-lite0-fp32.tflite";
 
-    return "myModel.tflite";
+    return "mobileNetRet.tflite";
+
   }
 
   @Override

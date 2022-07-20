@@ -54,7 +54,7 @@ public class ClassifierFloatMobileNet extends Classifier {
     // downloaded into assets.
     //return "mobilenet_v1_1.0_224.tflite";
 
-    return "myModel.tflite";
+    return "mobileNetRet.tflite";
   }
 
   @Override
