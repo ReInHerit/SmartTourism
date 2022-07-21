@@ -37,13 +37,18 @@ public class Retrievor {
     }
 
 
-    private double euclideanDistance(float[] a, ArrayList<Float> b) {
-        double diff_square_sum = 0.0;
+    private double euclideanDistance(float[] x, float[] y) {
+        return Math.sqrt(dot(x, x) - 2 * dot(x, y) + dot(y, y));
+    }
 
-        for (int i = 0; i < b.size(); i++) {
-            diff_square_sum += (a[i] - b.get(i)) * (a[i] - b.get(i));
-        }
-        return Math.sqrt(diff_square_sum);
+    private double dot(float[] xlist, float[] ylist) {
+        double result = 0.0;
+        int size = Math.min(xlist.length, ylist.length);
+
+        for (int i = 0; i < size; i++)
+            result += xlist[i] * ylist[i];
+
+        return result;
     }
 }
 

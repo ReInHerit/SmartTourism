@@ -138,11 +138,13 @@ public class DatabaseAccess {
 
                 //Convert matrix string to Float
                 String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
-                ArrayList<Float> listMatrix = new ArrayList<Float>();
+                float[] listMatrix = new float[splitted.length];
 
+                int z = 0;
                 for (String s: splitted
                 ) {
-                    listMatrix.add(Float.parseFloat(s));
+                    listMatrix[z] = Float.parseFloat(s);
+                    z++;
                 }
 
                 //element with converted matrix

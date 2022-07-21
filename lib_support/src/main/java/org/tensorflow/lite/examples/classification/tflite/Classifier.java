@@ -315,8 +315,8 @@ public abstract class Classifier {
 
     Trace.endSection();
 
-    //Log.v(TAG,"result: "+result.toString());
-    //Log.v(TAG,"finalResult: "+finalResult.toString());
+    Log.v(TAG,"result: "+result.toString());
+    Log.v(TAG,"finalResult: "+finalResult.toString());
 
     return finalResult;
   }

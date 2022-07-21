@@ -6,10 +6,10 @@ public class Element {
     private String style;
     private  String color;
     private double distance;
-    private ArrayList<Float> matrix;
+    private float[] matrix;
 
 
-    public Element (String style, String color,ArrayList<Float> matrix, double distance){
+    public Element (String style, String color,float[] matrix, double distance){
         this.color = color;
         this.style = style;
         this.distance = distance;
@@ -28,7 +28,7 @@ public class Element {
         return style;
     }
 
-    public ArrayList<Float> getMatrix(){ return matrix;}
+    public float[] getMatrix(){ return matrix;}
 
     @Override
     public String toString() {
