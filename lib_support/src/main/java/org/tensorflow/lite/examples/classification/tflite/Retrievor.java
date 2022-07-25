@@ -19,12 +19,16 @@ public class Retrievor {
         databaseAccess.open();
         databaseAccess.updateDatabase(5);
         databaseAccess.close();
+
+        System.loadLibrary("faiss");
     }
 
-    public ArrayList<Element> getNearest(float[] imgFeatures) {
+    public ArrayList<Element> getNearest(float[] imgFeatures, int k) {
         ArrayList<Element> list = new ArrayList<Element>();
 
-        for (Element element:databaseAccess.getListDB()) {
+        faissSearch(imgFeatures,k);
+
+        for (Element element: DatabaseAccess.getListDB()) {
             double distance = euclideanDistance(imgFeatures,element.getMatrix());
 
             if(distance < MAX_DISTANCE){
@@ -34,6 +38,16 @@ public class Retrievor {
         }
         return  list;
 
+    }
+
+    public void faissSearch(float[] imgFeatures, int k) {
+        ArrayList<Element> list = new ArrayList<Element>();
+        String result = stringFromJNI(imgFeatures, DatabaseAccess.getMatrixDB());
+        Log.v(TAG, result);
+
+        //TODO CONVERT STRING TO ELEMENT
+        // ADD ELEMENT TO LIST
+        // RETURN LIST
     }
 
 
@@ -50,6 +64,9 @@ public class Retrievor {
 
         return result;
     }
+
+
+    public static native String stringFromJNI(float[] imgFeatures,float[][] data);
 }
 
 
