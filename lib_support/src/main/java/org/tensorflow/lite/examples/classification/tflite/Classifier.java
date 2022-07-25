@@ -295,9 +295,10 @@ public abstract class Classifier {
     //Added
     float [] features = outputProbabilityBuffer.getFloatArray();
 
-    ArrayList<Element> result = retrievor.getNearest(features,K_TOP_RESULT);
+    //ArrayList<Element> result = retrievor.getNearest(features,K_TOP_RESULT);
+    ArrayList<Element> result = retrievor.faissSearch(features,K_TOP_RESULT);
 
-    //TODO FORSE NON IMPORTA PIU
+    //TODO CHECK FORSE NON IMPORTA PIU
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       result.sort(new Comparator<Element>() {
         @Override

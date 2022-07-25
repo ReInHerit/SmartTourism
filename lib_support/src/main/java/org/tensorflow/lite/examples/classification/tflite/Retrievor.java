@@ -26,8 +26,6 @@ public class Retrievor {
     public ArrayList<Element> getNearest(float[] imgFeatures, int k) {
         ArrayList<Element> list = new ArrayList<Element>();
 
-        faissSearch(imgFeatures,k);
-
         for (Element element: DatabaseAccess.getListDB()) {
             double distance = euclideanDistance(imgFeatures,element.getMatrix());
 
@@ -40,14 +38,25 @@ public class Retrievor {
 
     }
 
-    public void faissSearch(float[] imgFeatures, int k) {
-        ArrayList<Element> list = new ArrayList<Element>();
-        String result = stringFromJNI(imgFeatures, DatabaseAccess.getMatrixDB());
-        Log.v(TAG, result);
+    public ArrayList<Element> faissSearch(float[] imgFeatures, int k) {
+        ArrayList<Element> resultList = new ArrayList<Element>();
+        String result = stringFromJNI(imgFeatures, DatabaseAccess.getMatrixDB(),k);
 
-        //TODO CONVERT STRING TO ELEMENT
-        // ADD ELEMENT TO LIST
-        // RETURN LIST
+        String[] splitted = result.split("\\s+");
+
+        ArrayList<Element> DbList = DatabaseAccess.getListDB();
+
+        for (int z=0; z<k*2; z=z+2) {
+            int index = Integer.parseInt(splitted[z]);
+            double squaredDistance = Double.parseDouble(splitted[z+1]);
+
+            Element oldElement = DbList.get(index);
+            Element e = new Element(oldElement.getStyle(),oldElement.getColor(), oldElement.getMatrix(), Math.sqrt(squaredDistance));
+
+            resultList.add(e);
+        }
+
+        return resultList;
     }
 
 
@@ -66,7 +75,7 @@ public class Retrievor {
     }
 
 
-    public static native String stringFromJNI(float[] imgFeatures,float[][] data);
+    public static native String stringFromJNI(float[] imgFeatures,float[][] data,int k);
 }
 
 
