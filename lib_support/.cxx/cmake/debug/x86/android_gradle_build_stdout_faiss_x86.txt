@@ -1,0 +1,3 @@
+ninja: Entering directory `C:\Users\th3lo\Documents\examples-master-new\lite\examples\image_classification\android\lib_support\.cxx\cmake\debug\x86'
+[1/2] Building CXX object CMakeFiles/faiss.dir/native-lib.cpp.o
+[2/2] Linking CXX shared library C:\Users\th3lo\Documents\examples-master-new\lite\examples\image_classification\android\lib_support\build\intermediates\cmake\debug\obj\x86\libfaiss.so

@@ -26,6 +26,8 @@ import android.os.SystemClock;
 import android.os.Trace;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.MappedByteBuffer;
@@ -185,6 +187,7 @@ public abstract class Classifier {
       this.location = location;
     }
 
+    @NonNull
     @Override
     public String toString() {
       String resultString = "";
@@ -274,11 +277,10 @@ public abstract class Classifier {
 
     Trace.beginSection("recognizeImage");
 
+    //Load image
     Trace.beginSection("loadImage");
     long startTimeForLoadImage = SystemClock.uptimeMillis();
     inputImageBuffer = loadImage(bitmap, sensorOrientation);
-
-
     long endTimeForLoadImage = SystemClock.uptimeMillis();
     Trace.endSection();
     Log.v(TAG, "Timecost to load the image: " + (endTimeForLoadImage - startTimeForLoadImage));
@@ -292,13 +294,20 @@ public abstract class Classifier {
     Log.v(TAG, "Timecost to run model inference: " + (endTimeForReference - startTimeForReference));
 
 
-    //Added
+    //Get features
     float [] features = outputProbabilityBuffer.getFloatArray();
-
     //ArrayList<Element> result = retrievor.getNearest(features,K_TOP_RESULT);
+
+    //Faiss Search
+    Trace.beginSection("runFaissSearch");
+    long startTimeForFaiss = SystemClock.uptimeMillis();
     ArrayList<Element> result = retrievor.faissSearch(features,K_TOP_RESULT);
+    long endTimeForFaiss = SystemClock.uptimeMillis();
+    Log.v(TAG, "Timecost to run Faiss Search: " + (endTimeForFaiss - startTimeForFaiss));
+    Trace.endSection();
 
     //TODO CHECK FORSE NON IMPORTA PIU
+    /*
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       result.sort(new Comparator<Element>() {
         @Override
@@ -306,16 +315,19 @@ public abstract class Classifier {
           return Double.compare(lhs.getDistance(),rhs.getDistance());
         }
       });
-
-      //Log.v("Recognitions myResult: ",result.toString());
-
     }
+    */
 
     // Gets top-k results.
+    Trace.beginSection("runPostProcess");
+    long startTimeForPostProcess = SystemClock.uptimeMillis();
     Map<String, Double> labeledDistance = createMap(result);
     List<Recognition> finalResult = getTopKProbability(labeledDistance);
-
+    long endTimeForPostProcess = SystemClock.uptimeMillis();
+    Log.v(TAG, "Timecost to run Post Process: " + (endTimeForPostProcess - startTimeForPostProcess));
     Trace.endSection();
+
+    Trace.endSection(); //end recognize image section
 
     Log.v(TAG,"result: "+result.toString());
     Log.v(TAG,"finalResult: "+finalResult.toString());

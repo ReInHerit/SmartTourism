@@ -1,0 +1,3 @@
+C:/Users/th3lo/Documents/examples-master-new/lite/examples/image_classification/android/lib_support/.cxx/cmake/debug/arm64-v8a/CMakeFiles/faiss.dir
+C:/Users/th3lo/Documents/examples-master-new/lite/examples/image_classification/android/lib_support/.cxx/cmake/debug/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/th3lo/Documents/examples-master-new/lite/examples/image_classification/android/lib_support/.cxx/cmake/debug/arm64-v8a/CMakeFiles/rebuild_cache.dir

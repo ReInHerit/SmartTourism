@@ -12,10 +12,9 @@ public class Retrievor {
 
     public static final String TAG = "Retrievor";
     private static final double MAX_DISTANCE = 30.55;
-    private DatabaseAccess databaseAccess;
 
     public Retrievor(Context context){
-        databaseAccess = DatabaseAccess.getInstance(context);
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
         databaseAccess.updateDatabase(5);
         databaseAccess.close();
@@ -23,7 +22,7 @@ public class Retrievor {
         System.loadLibrary("faiss");
     }
 
-    public ArrayList<Element> getNearest(float[] imgFeatures, int k) {
+    public ArrayList<Element> getNearestByDistance(float[] imgFeatures, int k) {
         ArrayList<Element> list = new ArrayList<Element>();
 
         for (Element element: DatabaseAccess.getListDB()) {

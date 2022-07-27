@@ -73,64 +73,6 @@ public class DatabaseAccess {
      *
      * @return a List of quotes
      */
-    public List<String> getElements() {
-        List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT rowid,style,color FROM Elements", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(cursor.getString(0));
-            list.add(cursor.getString(1));
-            list.add(cursor.getString(2));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-    }
-
-    public List<String> getMatrix(int i) {
-        List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT value FROM Matrix WHERE element = " + i, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-    }
-
-    /*
-    public ArrayList<Element> getFeatureDistance(float[] features) {
-        ArrayList<Element> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM AllInOne WHERE rowid < (SELECT COUNT(*) FROM AllInOne)/10", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String style = cursor.getString(0);
-            String color =cursor.getString(1);
-            String matrix = cursor.getString(2);
-
-            //Convert matrix string to Float
-            String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
-            ArrayList<Float> listMatrix = new ArrayList<Float>();
-
-            for (String s: splitted
-                 ) {
-                listMatrix.add(Float.parseFloat(s));
-            }
-
-            //Calculate Distance
-            double distance = euclideanDistance(features,listMatrix);
-
-            Element e = new Element(style,color,distance);
-            list.add(e);
-
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-
-    }
-     */
 
     public void updateDatabase(int k) {
         database.isOpen();

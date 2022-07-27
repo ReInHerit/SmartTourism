@@ -1,12 +1,14 @@
 package org.tensorflow.lite.examples.classification.tflite;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class Element {
-    private String style;
-    private  String color;
-    private double distance;
-    private float[] matrix;
+    private final String style;
+    private final String color;
+    private final double distance;
+    private final float[] matrix;
 
 
     public Element (String style, String color,float[] matrix, double distance){
@@ -30,6 +32,7 @@ public class Element {
 
     public float[] getMatrix(){ return matrix;}
 
+    @NonNull
     @Override
     public String toString() {
         return "Element{" +
