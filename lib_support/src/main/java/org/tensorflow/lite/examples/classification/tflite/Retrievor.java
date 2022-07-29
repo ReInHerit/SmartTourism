@@ -11,12 +11,13 @@ import java.util.ArrayList;
 public class Retrievor {
 
     public static final String TAG = "Retrievor";
-    private static final double MAX_DISTANCE = 30.55;
+    private static final double MAX_DISTANCE = 35;
+    private static final int K = 1; //Divisor to upload database
 
     public Retrievor(Context context){
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
-        databaseAccess.updateDatabase(5);
+        databaseAccess.updateDatabase(K);
         databaseAccess.close();
 
         System.loadLibrary("faiss");

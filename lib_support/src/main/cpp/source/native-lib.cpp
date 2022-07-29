@@ -46,7 +46,11 @@ JNICALL stringFromJNI(JNIEnv *env, jclass clazz,jfloatArray imgFeatures,jobjectA
 
         (*env).ReleaseFloatArrayElements(arr, vals, JNI_COMMIT);
         (*env).DeleteLocalRef(arr);
+
+        delete(vals);
     }
+
+
 
 
 
@@ -91,8 +95,11 @@ JNICALL stringFromJNI(JNIEnv *env, jclass clazz,jfloatArray imgFeatures,jobjectA
         //LOGI("index->search[%lld]=%f", listIndex[i], listScore[i]);
         result += std::to_string(listIndex[i]) + " "+std::to_string(listScore[i]) + " ";
     }
-    free(listIndex);
-    free(listScore);
+
+    delete(listIndex);
+    delete(listScore);
+    delete(bodyImgFeatures);
+    delete(index);
 
     //result = std::to_string(index->ntotal);
 

@@ -78,7 +78,7 @@ public class DatabaseAccess {
         database.isOpen();
         listDB = new ArrayList<>();
         //i<k
-        for (int i = 0; i<1; i++){
+        for (int i = 0; i<k; i++){
             Log.v("DatabaseAccess", "id from "+i+"/"+k+" to "+(i+1)+"/"+k);
             Cursor cursor = database.rawQuery("SELECT * FROM AllInOne " +
                     "WHERE rowid > "+i+" * (SELECT COUNT(*) FROM AllInOne)/"+k+" AND rowid <= ("+i+"+1) * (SELECT COUNT(*) FROM AllInOne)/"+k, null);

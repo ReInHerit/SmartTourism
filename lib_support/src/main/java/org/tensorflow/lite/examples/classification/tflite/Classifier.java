@@ -57,7 +57,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 /** A classifier specialized to label images using TensorFlow Lite. */
 public abstract class Classifier {
   public static final String TAG = "ClassifierWithSupport";
-  private static final int K_TOP_RESULT = 5;
+  private static final int K_TOP_RESULT = 10;
 
   /** The model type used for classification. */
   public enum Model {
