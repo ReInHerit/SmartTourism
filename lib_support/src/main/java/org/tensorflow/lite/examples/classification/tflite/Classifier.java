@@ -373,10 +373,11 @@ public abstract class Classifier {
 
     ImageProcessor imageProcessor =
         new ImageProcessor.Builder()
-            .add(new ResizeWithCropOrPadOp(cropSize, cropSize))
+            .add(new ResizeWithCropOrPadOp(cropSize, cropSize)) //fa diventare immagine quadrata senza perdita risoluzione
             // To get the same inference results as lib_task_api, which is built on top of the Task
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
-            .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
+            //.add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
+            .add(new ResizeOp(224,224,ResizeMethod.BILINEAR))
             .add(new Rot90Op(numRotation))
             //.add(getPreprocessNormalizeOp())
             .build();
@@ -396,7 +397,7 @@ public abstract class Classifier {
       String style = e.getStyle();
       double distance = e.getDistance();
 
-      String newKey = style+" "+color;
+      String newKey = color+" "+style;
 
       if (labeledProbability.containsKey(newKey)){
         double value = labeledProbability.get(newKey);

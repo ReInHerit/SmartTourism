@@ -243,11 +243,20 @@ public abstract class CameraActivity extends AppCompatActivity
     yuvBytes[0] = bytes;
     yRowStride = previewWidth;
 
+    //Log.d("CameraActivity","H: "+previewHeight);
+    //Log.d("CameraActivity","W: "+previewWidth);
+
+
+
     imageConverter =
         new Runnable() {
           @Override
           public void run() {
             ImageUtils.convertYUV420SPToARGB8888(bytes, previewWidth, previewHeight, rgbBytes);
+
+            //Log.d("CameraActivity","Bytes: "+bytes.length);
+            //Log.d("CameraActivity","RGBBytes "+rgbBytes.length);
+
           }
         };
 
