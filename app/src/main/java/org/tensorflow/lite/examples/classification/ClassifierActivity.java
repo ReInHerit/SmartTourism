@@ -28,6 +28,8 @@ import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -95,6 +97,8 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         new Runnable() {
           @Override
           public void run() {
+
+
             if (classifier != null) {
               final long startTime = SystemClock.uptimeMillis();
               final List<Classifier.Recognition> results =

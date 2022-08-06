@@ -18,8 +18,10 @@ package org.tensorflow.lite.examples.classification.tflite;
 import static java.lang.Math.min;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.SystemClock;
@@ -30,8 +32,11 @@ import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -107,9 +112,11 @@ public abstract class Classifier {
   private final TensorBuffer outputProbabilityBuffer;
 
   /** Processer to apply post processing of the output probability. */
-  //private final TensorProcessor probabilityProcessor;
+  private final TensorProcessor probabilityProcessor;
 
   private final Retrievor retrievor;
+
+  private Context context;
 
   /**
    * Creates a classifier with the provided configuration.
@@ -215,6 +222,8 @@ public abstract class Classifier {
   protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
 
     retrievor = new Retrievor(activity);
+    this.context = activity.getApplicationContext();
+
     MappedByteBuffer tfliteModel = FileUtil.loadMappedFile(activity, getModelPath());
     switch (device) {
       case NNAPI:
@@ -266,7 +275,7 @@ public abstract class Classifier {
 
 
     // Creates the post processor for the output probability.
-    //probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
+    probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
     Log.d(TAG, "Created a Tensorflow Lite Image Classifier.");
   }
@@ -283,19 +292,43 @@ public abstract class Classifier {
     inputImageBuffer = loadImage(bitmap, sensorOrientation);
     long endTimeForLoadImage = SystemClock.uptimeMillis();
     Trace.endSection();
-    Log.v(TAG, "Timecost to load the image: " + (endTimeForLoadImage - startTimeForLoadImage));
 
+
+
+    Bitmap b =inputImageBuffer.getBitmap();
+
+    int[] pixels = new int[b.getHeight()*b.getWidth()];
+
+    b.getPixels(pixels, 0, b.getWidth(), 0, 0, b.getWidth(), b.getHeight());
+
+    for (int i=0; i<b.getWidth(); i++){
+      int p = pixels[i];
+
+      int R = (p >> 16) & 0xff;
+      int G = (p >> 8) & 0xff;
+      int B = p & 0xff;
+
+      Log.v("InputBuffer",R+" "+G+" "+B);
+
+    }
+
+
+
+
+    Log.v(TAG, "Timecost to load the image: " + (endTimeForLoadImage - startTimeForLoadImage));
     // Runs the inference call.
     Trace.beginSection("runInference");
     long startTimeForReference = SystemClock.uptimeMillis();
+    //LITTLE ENDIAN ORDER
     tflite.run(inputImageBuffer.getBuffer(), outputProbabilityBuffer.getBuffer().rewind()); //RUN INFERENCE
     long endTimeForReference = SystemClock.uptimeMillis();
     Trace.endSection();
     Log.v(TAG, "Timecost to run model inference: " + (endTimeForReference - startTimeForReference));
 
-
     //Get features
     float [] features = outputProbabilityBuffer.getFloatArray();
+    //float[] features = probabilityProcessor.process(outputProbabilityBuffer).getFloatArray();
+
     //ArrayList<Element> result = retrievor.getNearest(features,K_TOP_RESULT);
 
     //Faiss Search
@@ -305,18 +338,6 @@ public abstract class Classifier {
     long endTimeForFaiss = SystemClock.uptimeMillis();
     Log.v(TAG, "Timecost to run Faiss Search: " + (endTimeForFaiss - startTimeForFaiss));
     Trace.endSection();
-
-    //TODO CHECK FORSE NON IMPORTA PIU
-    /*
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      result.sort(new Comparator<Element>() {
-        @Override
-        public int compare(Element lhs, Element rhs) {
-          return Double.compare(lhs.getDistance(),rhs.getDistance());
-        }
-      });
-    }
-    */
 
     // Gets top-k results.
     Trace.beginSection("runPostProcess");
@@ -329,6 +350,13 @@ public abstract class Classifier {
 
     Trace.endSection(); //end recognize image section
 
+    String app = "";
+    for (Float f: features) {
+      app+=f+" ";
+    }
+
+    //Log.v(TAG, "input" + Arrays.toString(inputImageBuffer.getBuffer().array()));
+    Log.v(TAG,"features: "+app);
     Log.v(TAG,"result: "+result.toString());
     Log.v(TAG,"finalResult: "+finalResult.toString());
 
@@ -362,9 +390,41 @@ public abstract class Classifier {
   }
 
   /** Loads input image, and applies preprocessing. */
-  private TensorImage loadImage(final Bitmap bitmap, int sensorOrientation) {
+  private TensorImage loadImage(Bitmap bitmap, int sensorOrientation) {
     // Loads bitmap into a TensorImage.
+
+
+    //Try with particular image
+    InputStream in = null;
+    BitmapFactory.Options options = null;
+    try{
+      in = context.getAssets().open("images/Palazzo_Vecchio_004.JPG");
+      options = new BitmapFactory.Options();
+      options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+      bitmap = BitmapFactory.decodeStream(in,null,options);
+
+    }catch (Exception e){
+
+    }
+
+    //int[] pixels = new int[bitmap.getHeight()*bitmap.getWidth()];
+
+    //bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+    /*
+    for (int i=0; i<bitmap.getHeight()*bitmap.getWidth(); i++){
+      int p = pixels[i];
+
+      int R = (p >> 16) & 0xff;
+      int G = (p >> 8) & 0xff;
+      int B = p & 0xff;
+
+      //Log.v(TAG, i+": "+R+" "+G+" "+B);
+    }*/
+
+
     inputImageBuffer.load(bitmap); //image in ARGB_8888
+
 
     // Creates processor for the TensorImage.
     int cropSize = min(bitmap.getWidth(), bitmap.getHeight());
@@ -376,9 +436,9 @@ public abstract class Classifier {
             .add(new ResizeWithCropOrPadOp(cropSize, cropSize)) //fa diventare immagine quadrata senza perdita risoluzione
             // To get the same inference results as lib_task_api, which is built on top of the Task
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
-            //.add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.BILINEAR))
-            .add(new ResizeOp(224,224,ResizeMethod.BILINEAR))
-            .add(new Rot90Op(numRotation))
+            .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
+            //.add(new ResizeOp(224,224,ResizeMethod.BILINEAR))
+            //.add(new Rot90Op(numRotation)) //numRotation instead of 0
             //.add(getPreprocessNormalizeOp())
             .build();
     return imageProcessor.process(inputImageBuffer);

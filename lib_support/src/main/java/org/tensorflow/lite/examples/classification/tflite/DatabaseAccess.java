@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class DatabaseAccess {
@@ -95,8 +96,11 @@ public class DatabaseAccess {
                 int z = 0;
                 for (String s: splitted
                 ) {
-                    listMatrix[z] = Float.parseFloat(s);
-                    z++;
+                    if(!Objects.equals(s, "")){
+                        listMatrix[z] = Float.parseFloat(s);
+                        z++;
+                    }
+
                 }
 
                 //element with converted matrix

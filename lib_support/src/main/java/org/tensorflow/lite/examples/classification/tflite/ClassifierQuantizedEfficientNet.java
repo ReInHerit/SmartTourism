@@ -53,7 +53,8 @@ public class ClassifierQuantizedEfficientNet extends Classifier {
     // downloaded into assets.
     //return "efficientnet-lite0-int8.tflite";
 
-    return "mobileNetRet.tflite";
+    return "lite-model_imagenet_mobilenet_v3_large_100_224_classification_5_default_1.tflite";
+
   }
 
   @Override

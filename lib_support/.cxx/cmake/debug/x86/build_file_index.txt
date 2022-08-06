@@ -1,1 +1,1 @@
-C:\Users\th3lo\Documents\examples-master-new\lite\examples\image_classification\android\lib_support\src\main\cpp\source\CMakeLists.txt
+C:\Users\Lorenzo\StudioProjects\SmartTourism\lib_support\src\main\cpp\source\CMakeLists.txt

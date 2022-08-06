@@ -50,10 +50,12 @@ public class Retrievor {
             int index = Integer.parseInt(splitted[z]);
             double squaredDistance = Double.parseDouble(splitted[z+1]);
 
-            Element oldElement = DbList.get(index);
-            Element e = new Element(oldElement.getStyle(),oldElement.getColor(), oldElement.getMatrix(), Math.sqrt(squaredDistance));
+            if(index != -1){
+                Element oldElement = DbList.get(index);
+                Element e = new Element(oldElement.getStyle(),oldElement.getColor(), oldElement.getMatrix(), Math.sqrt(squaredDistance));
 
-            resultList.add(e);
+                resultList.add(e);
+            }
         }
 
         return resultList;
