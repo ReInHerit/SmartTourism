@@ -60,10 +60,10 @@ public abstract class Classifier {
 
   /** The model type used for classification. */
   public enum Model {
-    FLOAT_MOBILENET,
-    QUANTIZED_MOBILENET,
-    FLOAT_EFFICIENTNET,
-    QUANTIZED_EFFICIENTNET
+    MOBILENET_V3_LARGE_100,
+    MOBILENET_V3_LARGE_075,
+    MOBILENET_V3_SMALL_100,
+    QUANTIZED_MOBILENET
   }
 
   /** The runtime device type used for executing classification. */
@@ -115,7 +115,7 @@ public abstract class Classifier {
   /** Processer to apply post processing of the output probability. */
   //private final TensorProcessor probabilityProcessor;
 
-  private final Retrievor retrievor;
+  private static Retrievor retrievor;
 
   private Context context;
 
@@ -131,14 +131,14 @@ public abstract class Classifier {
   public static Classifier create(Activity activity, Model model, Device device, int numThreads)
       throws IOException {
 
-    if (model == Model.QUANTIZED_MOBILENET) {
-      return new ClassifierQuantizedMobileNet(activity, device, numThreads);
-    } else if (model == Model.FLOAT_MOBILENET) {
-      return new ClassifierFloatMobileNet(activity, device, numThreads);
-    } else if (model == Model.FLOAT_EFFICIENTNET) {
-      return new ClassifierFloatEfficientNet(activity, device, numThreads);
-    } else if (model == Model.QUANTIZED_EFFICIENTNET) {
-      return new ClassifierQuantizedEfficientNet(activity, device, numThreads);
+    retrievor = new Retrievor(activity,model);
+
+    if (model == Model.MOBILENET_V3_LARGE_100) {
+      return new ClassifierMobileNetLarge100(activity, device, numThreads);
+    } else if (model == Model.MOBILENET_V3_LARGE_075) {
+      return new ClassifierMobileNetLarge075(activity, device, numThreads);
+    } else if (model == Model.MOBILENET_V3_SMALL_100) {
+      return new ClassifierMobileNetSmall100(activity, device, numThreads);
     } else {
       throw new UnsupportedOperationException();
     }
@@ -223,7 +223,6 @@ public abstract class Classifier {
   /** Initializes a {@code Classifier}. */
   protected Classifier(Activity activity, Device device, int numThreads) throws IOException {
 
-    retrievor = new Retrievor(activity);
     this.context = activity.getApplicationContext();
 
     MappedByteBuffer tfliteModel = FileUtil.loadMappedFile(activity, getModelPath());

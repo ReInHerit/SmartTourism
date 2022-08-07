@@ -11,11 +11,23 @@ import java.util.ArrayList;
 public class Retrievor {
 
     public static final String TAG = "Retrievor";
-    private static final double MAX_DISTANCE = 35;
+    private static final double MAX_DISTANCE = 1000000000;
     private static final int K = 1; //Divisor to upload database
 
-    public Retrievor(Context context){
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
+    public Retrievor(Context context, Classifier.Model model){
+        String dbName="";
+
+        if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
+            dbName = "MN3Large100.sqlite";
+        } else if (model == Classifier.Model.MOBILENET_V3_LARGE_075) {
+            dbName = "MN3Large075.sqlite";
+        } else if (model == Classifier.Model.MOBILENET_V3_SMALL_100) {
+            dbName = "MN3Small100.sqlite";
+        } else {
+            throw new UnsupportedOperationException();
+        }
+
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context,dbName);
         databaseAccess.open();
         databaseAccess.updateDatabase(K);
         databaseAccess.close();
@@ -23,6 +35,7 @@ public class Retrievor {
         System.loadLibrary("faiss");
     }
 
+    /** Min distance without Faiss */
     public ArrayList<Element> getNearestByDistance(float[] imgFeatures, int k) {
         ArrayList<Element> list = new ArrayList<Element>();
 

@@ -292,8 +292,8 @@
             android:id="@+id/model_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
             android:entries="@array/tfe_ic_models"
             android:prompt="@string/tfe_ic_model" />
     </RelativeLayout>

@@ -22,8 +22,8 @@ public class DatabaseAccess {
      *
      * @param context
      */
-    private DatabaseAccess(Context context) {
-        this.openHelper = new DatabaseOpenHelper(context);
+    private DatabaseAccess(Context context, String dbName) {
+        this.openHelper = new DatabaseOpenHelper(context,dbName);
     }
 
     /**
@@ -32,10 +32,10 @@ public class DatabaseAccess {
      * @param context the Context
      * @return the instance of DabaseAccess
      */
-    public static DatabaseAccess getInstance(Context context) {
-        if (instance == null) {
-            instance = new DatabaseAccess(context);
-        }
+    public static DatabaseAccess getInstance(Context context, String dbName) {
+        //if (instance == null) {
+            instance = new DatabaseAccess(context,dbName);
+        //}
         return instance;
     }
 

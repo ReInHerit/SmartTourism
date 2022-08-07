@@ -196,3 +196,5 @@
 75634	80930	681406670	CMakeFiles/faiss.dir/faiss_32/utils_simd.cpp.o	6daf8a3d843e038c
 76323	86310	681406675	CMakeFiles/faiss.dir/faiss_32/index_io.cpp.o	f6c27512c7fec5ca
 86310	89377	681406678	C:/Users/Lorenzo/StudioProjects/SmartTourism/lib_support/build/intermediates/cmake/debug/obj/x86/libfaiss.so	4c9578f830930728
+6	2069	681604791	CMakeFiles/faiss.dir/native-lib.cpp.o	c0864f000945f011
+2070	5865	681604795	C:/Users/Lorenzo/StudioProjects/SmartTourism/lib_support/build/intermediates/cmake/debug/obj/x86/libfaiss.so	4c9578f830930728
