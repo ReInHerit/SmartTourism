@@ -196,3 +196,5 @@
 80533	84887	681407368	CMakeFiles/faiss.dir/faiss/utils.cpp.o	e909c106ec378245
 79712	86230	681407369	CMakeFiles/faiss.dir/faiss/index_io.cpp.o	3cbd05d27555a0cc
 86230	88777	681407372	C:/Users/Lorenzo/StudioProjects/SmartTourism/lib_support/build/intermediates/cmake/debug/obj/arm64-v8a/libfaiss.so	cf9b0945ccd9ad2
+9	1728	681584581	CMakeFiles/faiss.dir/native-lib.cpp.o	80a2e624e3e33c86
+1728	6946	681584586	C:/Users/Lorenzo/StudioProjects/SmartTourism/lib_support/build/intermediates/cmake/debug/obj/arm64-v8a/libfaiss.so	cf9b0945ccd9ad2

@@ -52,7 +52,7 @@ public class Retrievor {
 
             if(index != -1){
                 Element oldElement = DbList.get(index);
-                Element e = new Element(oldElement.getStyle(),oldElement.getColor(), oldElement.getMatrix(), Math.sqrt(squaredDistance));
+                Element e = new Element(oldElement.getStyle(),oldElement.getColor(), oldElement.getMatrix(), squaredDistance);
 
                 resultList.add(e);
             }
