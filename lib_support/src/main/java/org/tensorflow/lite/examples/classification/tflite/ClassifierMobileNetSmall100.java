@@ -27,14 +27,14 @@ public class ClassifierMobileNetSmall100 extends Classifier {
    * The quantized model does not require normalization, thus set mean as 0.0f, and std as 1.0f to
    * bypass the normalization.
    */
-  private static final float IMAGE_MEAN = 0.0f;
+  private static final float IMAGE_MEAN = 127.0f;
 
-  private static final float IMAGE_STD = 1.0f;
+  private static final float IMAGE_STD = 127.0f;
 
   /** Quantized MobileNet requires additional dequantization to the output probability. */
   private static final float PROBABILITY_MEAN = 0.0f;
 
-  private static final float PROBABILITY_STD = 255.0f;
+  private static final float PROBABILITY_STD = 1.0f;
 
   /**
    * Initializes a {@code ClassifierQuantizedMobileNet}.

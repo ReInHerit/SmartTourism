@@ -45,6 +45,7 @@ import org.tensorflow.lite.gpu.GpuDelegate;
 import org.tensorflow.lite.nnapi.NnApiDelegate;
 import org.tensorflow.lite.support.common.FileUtil;
 import org.tensorflow.lite.support.common.TensorOperator;
+import org.tensorflow.lite.support.common.TensorProcessor;
 import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.image.ops.ResizeOp;
@@ -113,7 +114,7 @@ public abstract class Classifier {
   private final TensorBuffer outputProbabilityBuffer;
 
   /** Processer to apply post processing of the output probability. */
-  //private final TensorProcessor probabilityProcessor;
+  private final TensorProcessor probabilityProcessor;
 
   private static Retrievor retrievor;
 
@@ -281,7 +282,7 @@ public abstract class Classifier {
 
 
     // Creates the post processor for the output probability.
-    //probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
+    probabilityProcessor = new TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build();
 
     Log.d(TAG, "Created a Tensorflow Lite Image Classifier.");
   }
@@ -311,9 +312,15 @@ public abstract class Classifier {
     Log.v(TAG, "Timecost to run model inference: " + (endTimeForReference - startTimeForReference));
 
     //Get features
-    float [] features = outputProbabilityBuffer.getFloatArray();
+    /*float [] features = outputProbabilityBuffer.getFloatArray();
     float [] featuresZoom1 = outputProbabilityBufferZoom1.getFloatArray();
     float [] featuresZoom2 = outputProbabilityBufferZoom2.getFloatArray();
+    */
+
+    //Get features + Postprocess
+    float [] features = probabilityProcessor.process(outputProbabilityBuffer).getFloatArray();
+    float [] featuresZoom1 = probabilityProcessor.process(outputProbabilityBufferZoom1).getFloatArray();
+    float [] featuresZoom2 = probabilityProcessor.process(outputProbabilityBufferZoom2).getFloatArray();
 
     //Faiss Search
     Trace.beginSection("runFaissSearch");
@@ -397,7 +404,7 @@ public abstract class Classifier {
 
 
     //Try with particular image
-  /*
+/*
     InputStream in = null;
     BitmapFactory.Options options = null;
     try{
@@ -409,7 +416,7 @@ public abstract class Classifier {
     }catch (Exception e){
 
     }
-    */
+*/
 
     //Show image pixels
     /*
@@ -450,7 +457,7 @@ public abstract class Classifier {
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
             .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
             .add(new Rot90Op(0))
-            //.add(getPreprocessNormalizeOp())
+            .add(getPreprocessNormalizeOp())
             .build();
 
     int cropSizeZoom1 = (int) (cropSize*zoomRatioZoom1);
@@ -462,7 +469,7 @@ public abstract class Classifier {
                     // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
                     .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
                     .add(new Rot90Op(0))
-                    //.add(getPreprocessNormalizeOp())
+                    .add(getPreprocessNormalizeOp())
                     .build();
 
     int cropSizeZoom2 = (int) (cropSize*zoomRatioZoom2);
@@ -474,7 +481,7 @@ public abstract class Classifier {
                     // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
                     .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
                     .add(new Rot90Op(0))
-                    //.add(getPreprocessNormalizeOp())
+                    .add(getPreprocessNormalizeOp())
                     .build();
 
     inputImageBuffer = imageProcessor.process(inputImageBuffer);
