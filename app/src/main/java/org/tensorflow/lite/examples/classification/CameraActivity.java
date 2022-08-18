@@ -218,6 +218,7 @@ public abstract class CameraActivity extends AppCompatActivity
   }
 
   /** Callback for android.hardware.Camera API */
+
   @Override
   public void onPreviewFrame(final byte[] bytes, final Camera camera) {
     if (isProcessingFrame) {
@@ -232,7 +233,7 @@ public abstract class CameraActivity extends AppCompatActivity
         previewHeight = previewSize.height;
         previewWidth = previewSize.width;
         rgbBytes = new int[previewWidth * previewHeight];
-        onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
+        onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 270); /** Camera rotation*/
       }
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
@@ -269,6 +270,8 @@ public abstract class CameraActivity extends AppCompatActivity
           }
         };
     processImage();
+
+    //Log.v("CameraActivity", "processImage Camera1");
   }
 
   /** Callback for Camera2 API */
@@ -327,6 +330,8 @@ public abstract class CameraActivity extends AppCompatActivity
           };
 
       processImage();
+      //Log.v("CameraActivity", "processImage Camera2");
+
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();

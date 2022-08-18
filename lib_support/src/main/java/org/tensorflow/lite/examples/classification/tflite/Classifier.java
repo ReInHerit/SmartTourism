@@ -57,7 +57,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 /** A classifier specialized to label images using TensorFlow Lite. */
 public abstract class Classifier {
   public static final String TAG = "ClassifierWithSupport";
-  private static final int K_TOP_RESULT = 5;
+  private static final int K_TOP_RESULT = 4;
 
   /** The model type used for classification. */
   public enum Model {
@@ -456,7 +456,7 @@ public abstract class Classifier {
             // To get the same inference results as lib_task_api, which is built on top of the Task
             // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
             .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
-            .add(new Rot90Op(0))
+            .add(new Rot90Op(numRotation))
             .add(getPreprocessNormalizeOp())
             .build();
 
@@ -468,7 +468,7 @@ public abstract class Classifier {
                     // To get the same inference results as lib_task_api, which is built on top of the Task
                     // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
                     .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
-                    .add(new Rot90Op(0))
+                    .add(new Rot90Op(numRotation))
                     .add(getPreprocessNormalizeOp())
                     .build();
 
@@ -480,7 +480,7 @@ public abstract class Classifier {
                     // To get the same inference results as lib_task_api, which is built on top of the Task
                     // Library, use ResizeMethod.BILINEAR. ERA (ResizeMethod.NEAREST_NEIGHBOR)
                     .add(new ResizeOp(imageSizeX, imageSizeY, ResizeMethod.NEAREST_NEIGHBOR))
-                    .add(new Rot90Op(0))
+                    .add(new Rot90Op(numRotation))
                     .add(getPreprocessNormalizeOp())
                     .build();
 
@@ -536,7 +536,7 @@ public abstract class Classifier {
         labeledProbability.put(newKey,value-1);
       }else {
         //labeledProbability.put(newKey, distance);
-        labeledProbability.put(newKey, 10d);
+        labeledProbability.put(newKey, K_TOP_RESULT*3d);
       }
     }
 
@@ -558,7 +558,7 @@ public abstract class Classifier {
         labeledProbability.put(newKey,value-1);
       }else {
         //labeledProbability.put(newKey, distance);
-        labeledProbability.put(newKey, 10d);
+        labeledProbability.put(newKey, K_TOP_RESULT*3d);
       }
     }
 
