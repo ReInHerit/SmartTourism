@@ -126,7 +126,7 @@ for dType in types:
     now = datetime.now() # current date and time
     date_time = now.strftime("%m%d%Y-%H%M%S")
 
-    with open('./features/' + dType + '_features.pck', 'wb') as fp:
+    with open('./features/' + dType + '_features_v2.pck', 'wb') as fp:
         pickle.dump(db, fp)
 
     print('Extraction finish. DB saved.')

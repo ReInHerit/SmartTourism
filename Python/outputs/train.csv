@@ -1,59 +1,88 @@
 path,color,type
 
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_004.JPG,Battistero,SanGiovanni
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_007.JPG,Palazzo,Vecchio
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_003.JPG,Palazzo,Vecchio
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_003.JPG,Loggia,Bigallo
 dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_018.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_011.JPG,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_006.JPG,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_008.JPG,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_016.jpg,Cattedrale,Duomo
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_010.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_009.jpg,Battistero,SanGiovanni
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_013.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.11.39.jpg,Battistero,SanGiovanni
+dataFirenze\Battistero_SanGiovanni\2022-08-22 10.18.46.jpg,Battistero,SanGiovanni
+dataFirenze\Campanile_Giotto\2022-08-22 10.15.46.jpg,Campanile,Giotto
+dataFirenze\Campanile_Giotto\Campanile_Giotto_004.JPG,Campanile,Giotto
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_005.JPG,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_008.jpg,Battistero,SanGiovanni
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_002.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\2022-08-22 10.19.10.jpg,Battistero,SanGiovanni
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_007.jpg,Loggia,Bigallo
+dataFirenze\Campanile_Giotto\Campanile_Giotto_003.JPG,Campanile,Giotto
+dataFirenze\Campanile_Giotto\2022-08-22 09.11.28.jpg,Campanile,Giotto
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_015.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.21.54.jpg,Battistero,SanGiovanni
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_006.JPG,Battistero,SanGiovanni
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_008.jpg,Loggia,Bigallo
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.16.23.jpg,Battistero,SanGiovanni
+dataFirenze\Campanile_Giotto\2022-08-22 09.20.22.jpg,Campanile,Giotto
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_004.JPG,Palazzo,Vecchio
+dataFirenze\Campanile_Giotto\2022-08-22 09.17.26.jpg,Campanile,Giotto
+dataFirenze\Campanile_Giotto\2022-08-22 09.20.44.jpg,Campanile,Giotto
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_014.jpg,Cattedrale,Duomo
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_005.JPG,Loggia,Bigallo
+dataFirenze\Campanile_Giotto\2022-08-22 10.18.52.jpg,Campanile,Giotto
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_003.JPG,Battistero,SanGiovanni
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_012.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.50.03.jpg,Battistero,SanGiovanni
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_019.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_024.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_025.jpg,Cattedrale,Duomo
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_007.JPG,Battistero,SanGiovanni
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_002.jpg,Cattedrale,Duomo
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.14.10.jpg,Battistero,SanGiovanni
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_007.JPG,Palazzo,Vecchio
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_006.JPG,Palazzo,Vecchio
+dataFirenze\Campanile_Giotto\Campanile_Giotto_002.JPG,Campanile,Giotto
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.21.27.jpg,Battistero,SanGiovanni
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_013.jpg,Cattedrale,Duomo
+dataFirenze\Campanile_Giotto\2022-08-22 09.24.24.jpg,Campanile,Giotto
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_001.jpg,Battistero,SanGiovanni
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_020.jpg,Cattedrale,Duomo
+dataFirenze\Campanile_Giotto\2022-08-22 09.10.56.jpg,Campanile,Giotto
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_004.JPG,Loggia,Bigallo
+dataFirenze\Campanile_Giotto\2022-08-22 09.18.25.jpg,Campanile,Giotto
+dataFirenze\Campanile_Giotto\Campanile_Giotto_007.jpg,Campanile,Giotto
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_023.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_004.JPG,Cattedrale,Duomo
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_001.jpg,Loggia,Bigallo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_028.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_001.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_010.JPG,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_021.jpg,Cattedrale,Duomo
 dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_009.JPG,Palazzo,Vecchio
 dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_017.jpg,Cattedrale,Duomo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_013.jpg,Cattedrale,Duomo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_006.JPG,Cattedrale,Duomo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_011.JPG,Cattedrale,Duomo
-dataFirenze\Loggia_Bigallo\Loggia_Bigallo_007.jpg,Loggia,Bigallo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_014.jpg,Cattedrale,Duomo
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_008.jpg,Battistero,SanGiovanni
-dataFirenze\Loggia_Bigallo\Loggia_Bigallo_004.JPG,Loggia,Bigallo
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_001.jpg,Battistero,SanGiovanni
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_001.jpg,Palazzo,Vecchio
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_002.jpg,Cattedrale,Duomo
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_006.JPG,Palazzo,Vecchio
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_004.JPG,Palazzo,Vecchio
-dataFirenze\Campanile_Giotto\Campanile_Giotto_007.jpg,Campanile,Giotto
-dataFirenze\Loggia_Bigallo\Loggia_Bigallo_001.jpg,Loggia,Bigallo
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_003.JPG,Palazzo,Vecchio
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_007.JPG,Cattedrale,Duomo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_016.jpg,Cattedrale,Duomo
-dataFirenze\Loggia_Bigallo\Loggia_Bigallo_003.JPG,Loggia,Bigallo
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_005.JPG,Battistero,SanGiovanni
-dataFirenze\Campanile_Giotto\Campanile_Giotto_005.jpg,Campanile,Giotto
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_012.JPG,Cattedrale,Duomo
-dataFirenze\Campanile_Giotto\Campanile_Giotto_003.JPG,Campanile,Giotto
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_005.JPG,Cattedrale,Duomo
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_003.JPG,Battistero,SanGiovanni
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_008.JPG,Cattedrale,Duomo
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_010.jpg,Palazzo,Vecchio
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_002.jpg,Palazzo,Vecchio
-dataFirenze\Loggia_Bigallo\Loggia_Bigallo_002.JPG,Loggia,Bigallo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_009.JPG,Cattedrale,Duomo
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_012.jpg,Palazzo,Vecchio
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_015.jpg,Cattedrale,Duomo
+dataFirenze\Campanile_Giotto\2022-08-22 09.20.55.jpg,Campanile,Giotto
 dataFirenze\Loggia_Bigallo\Loggia_Bigallo_006.jpg,Loggia,Bigallo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_004.JPG,Cattedrale,Duomo
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_009.jpg,Battistero,SanGiovanni
-dataFirenze\Campanile_Giotto\Campanile_Giotto_002.JPG,Campanile,Giotto
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_013.jpg,Palazzo,Vecchio
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_008.JPG,Palazzo,Vecchio
+dataFirenze\Campanile_Giotto\Campanile_Giotto_005.jpg,Campanile,Giotto
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_001.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\2022-08-22 10.19.08.jpg,Battistero,SanGiovanni
+dataFirenze\Campanile_Giotto\Campanile_Giotto_006.jpg,Campanile,Giotto
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_009.JPG,Cattedrale,Duomo
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.12.19.jpg,Battistero,SanGiovanni
+dataFirenze\Loggia_Bigallo\Loggia_Bigallo_002.JPG,Loggia,Bigallo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_026.jpg,Cattedrale,Duomo
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_002.JPG,Battistero,SanGiovanni
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_004.JPG,Battistero,SanGiovanni
+dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_005.JPG,Battistero,SanGiovanni
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_012.JPG,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_027.jpg,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_003.JPG,Cattedrale,Duomo
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_022.jpg,Cattedrale,Duomo
+dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_014.jpg,Palazzo,Vecchio
+dataFirenze\Battistero_SanGiovanni\2022-08-22 09.21.31.jpg,Battistero,SanGiovanni
 dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_011.jpg,Palazzo,Vecchio
 dataFirenze\Campanile_Giotto\Campanile_Giotto_001.jpg,Campanile,Giotto
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_002.JPG,Battistero,SanGiovanni
-dataFirenze\Campanile_Giotto\Campanile_Giotto_004.JPG,Campanile,Giotto
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_003.JPG,Cattedrale,Duomo
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_008.JPG,Palazzo,Vecchio
-dataFirenze\Campanile_Giotto\Campanile_Giotto_006.jpg,Campanile,Giotto
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_010.JPG,Cattedrale,Duomo
-dataFirenze\Loggia_Bigallo\Loggia_Bigallo_005.JPG,Loggia,Bigallo
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_014.jpg,Palazzo,Vecchio
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_006.JPG,Battistero,SanGiovanni
-dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_005.JPG,Palazzo,Vecchio
-dataFirenze\Battistero_SanGiovanni\Battistero_SanGiovanni_007.JPG,Battistero,SanGiovanni
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_001.jpg,Cattedrale,Duomo
-dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_019.jpg,Cattedrale,Duomo
-
+dataFirenze\Cattedrale_Duomo\Cattedrale_SantaMariaDelFiore_005.JPG,Cattedrale,Duomo

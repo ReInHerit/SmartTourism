@@ -8,12 +8,12 @@ import sqlite3
 import numpy as np
 np.set_printoptions(threshold=np.inf)
 
-with open("./features/MobileNetV3_Large_075_features.pck", "rb") as f:
+with open("./features/MobileNetV3_Small_100_features_v2.pck", "rb") as f:
     object = pkl.load(f)
     
 df = pd.DataFrame(object)
 
-con = sqlite3.connect("MN3Large075.sqlite")
+con = sqlite3.connect("MN3Small100_v2.sqlite")
 cur = con.cursor()
 
 sql_create_table = """ CREATE TABLE IF NOT EXISTS AllInOne (style, color, value) """

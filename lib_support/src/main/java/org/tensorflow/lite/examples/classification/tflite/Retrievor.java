@@ -18,11 +18,11 @@ public class Retrievor {
         String dbName="";
 
         if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
-            dbName = "MN3Large100.sqlite";
+            dbName = "MN3Large100_v2.sqlite";
         } else if (model == Classifier.Model.MOBILENET_V3_LARGE_075) {
-            dbName = "MN3Large075.sqlite";
+            dbName = "MN3Large075_v2.sqlite";
         } else if (model == Classifier.Model.MOBILENET_V3_SMALL_100) {
-            dbName = "MN3Small100.sqlite";
+            dbName = "MN3Small100_v2.sqlite";
         } else {
             throw new UnsupportedOperationException();
         }
