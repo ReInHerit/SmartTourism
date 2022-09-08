@@ -17,8 +17,10 @@
 package org.tensorflow.lite.examples.classification;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -43,6 +45,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -60,6 +64,7 @@ import java.util.stream.Collectors;
 
 import org.tensorflow.lite.examples.classification.env.ImageUtils;
 import org.tensorflow.lite.examples.classification.env.Logger;
+import org.tensorflow.lite.examples.classification.tflite.Classifier.Language;
 import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
 import org.tensorflow.lite.examples.classification.tflite.Classifier.Model;
 import org.tensorflow.lite.examples.classification.tflite.Classifier.Recognition;
@@ -109,6 +114,16 @@ public abstract class CameraActivity extends AppCompatActivity
   private Device device = Device.CPU;
   private int numThreads = -1;
 
+  //Popup Recognized
+  private ArrayList<String> recognitionList = new ArrayList<String>();
+  private AlertDialog.Builder dialogBuilder;
+  private AlertDialog dialog;
+  private boolean dialogIsOpen = false;
+
+  //Language
+  private Spinner languageSpinner;
+  private Language language = Language.English;
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -128,6 +143,7 @@ public abstract class CameraActivity extends AppCompatActivity
     minusImageView = findViewById(R.id.minus);
     modelSpinner = findViewById(R.id.model_spinner);
     deviceSpinner = findViewById(R.id.device_spinner);
+    languageSpinner = findViewById(R.id.language_spinner);
     bottomSheetLayout = findViewById(R.id.bottom_sheet_layout);
     gestureLayout = findViewById(R.id.gesture_layout);
     sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
@@ -195,13 +211,16 @@ public abstract class CameraActivity extends AppCompatActivity
 
     modelSpinner.setOnItemSelectedListener(this);
     deviceSpinner.setOnItemSelectedListener(this);
+    languageSpinner.setOnItemSelectedListener(this);
 
     plusImageView.setOnClickListener(this);
     minusImageView.setOnClickListener(this);
 
     model = Model.valueOf(modelSpinner.getSelectedItem().toString().toUpperCase());
     device = Device.valueOf(deviceSpinner.getSelectedItem().toString());
+    language = Language.valueOf(languageSpinner.getSelectedItem().toString());
     numThreads = Integer.parseInt(threadsTextView.getText().toString().trim());
+
   }
 
   protected int[] getRgbBytes() {
@@ -350,6 +369,14 @@ public abstract class CameraActivity extends AppCompatActivity
   public synchronized void onResume() {
     LOGGER.d("onResume " + this);
     super.onResume();
+
+
+    //I added this if to continue using camera after having closed app
+    if (hasPermission()) {
+      setFragment();
+    } else {
+      requestPermission();
+    }
 
     handlerThread = new HandlerThread("inference");
     handlerThread.start();
@@ -543,29 +570,37 @@ public abstract class CameraActivity extends AppCompatActivity
 
   @UiThread
   protected void showResultsInBottomSheet(List<Recognition> results) {
-    if (results != null && results.size() >= 3) {
-      Recognition recognition = results.get(0);
-      Recognition recognition1 = results.get(1);
-      Recognition recognition2 = results.get(2);
+    Recognition recognition = null;
+    Recognition recognition1 = null;
+    Recognition recognition2 = null;
 
-      //TODO puo essere ottimizzato, scorrendo solo una volta la lista
-      /*int n = 10;
-      List<Recognition> out = results.subList(0, 9);
+    if (results != null && results.size() >= 1 && !dialogIsOpen) {
+      recognition = results.get(0);
+      if(results.size() >= 2)
+        recognition1 = results.get(1);
+      if(results.size() >= 3)
+        recognition2 = results.get(2);
 
-      Log.v("Result",out.toString());
+      String firstPosition = recognition.getTitle();
 
-      recognition.setConfidence((double) Collections.frequency(out, recognition));
-      recognition1.setConfidence((double) Collections.frequency(out, recognition1));
-      recognition2.setConfidence((double) Collections.frequency(out, recognition2));
-      */
-      if (recognition != null) {
-        if (recognition.getTitle() != null) recognitionTextView.setText(recognition.getTitle());
-        if (recognition.getConfidence() != null)
-          recognitionValueTextView.setText(
-              //String.format("%.2f", (100 * recognition.getConfidence())) + "%"
-                recognition.getConfidence().toString()
-          );
+      if(recognitionList.isEmpty())
+        recognitionList.add(firstPosition);
+      else if(recognitionList.get(recognitionList.size()-1).equals(firstPosition))
+          recognitionList.add(firstPosition);
+      else{
+          recognitionList.clear();
+          recognitionList.add(firstPosition);
       }
+
+
+
+      if (recognition.getTitle() != null) recognitionTextView.setText(recognition.getTitle());
+      if (recognition.getConfidence() != null)
+        recognitionValueTextView.setText(
+            //String.format("%.2f", (100 * recognition.getConfidence())) + "%"
+              recognition.getConfidence().toString()
+        );
+
 
       if (recognition1 != null) {
         if (recognition1.getTitle() != null) recognition1TextView.setText(recognition1.getTitle());
@@ -584,7 +619,56 @@ public abstract class CameraActivity extends AppCompatActivity
                   recognition2.getConfidence().toString()
           );
       }
+
+
+      if(recognitionList.size() >= 3){
+        //show button more info
+        Recognition finalRecognition = recognition;
+
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View popupRecognizedView = getLayoutInflater().inflate(R.layout.popup_recognized,null);
+        TextView recognizedMonumentTextView = popupRecognizedView.findViewById(R.id.monument_recognized);
+        recognizedMonumentTextView.setText(finalRecognition.getTitle());
+
+        dialogBuilder.setView(popupRecognizedView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        Button moreInfoButton = popupRecognizedView.findViewById(R.id.more_info_button);
+
+        moreInfoButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            //define button function
+            Intent intent = new Intent(CameraActivity.this,GuideActivity.class);
+            intent.putExtra("monument_id", finalRecognition.getId());
+            intent.putExtra("language", language.toString());
+            startActivity(intent);
+            dialog.dismiss();
+            dialogIsOpen=false;
+          }
+        });
+
+        Button cancelButton = popupRecognizedView.findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            //define button function
+            dialog.dismiss();
+            dialogIsOpen=false;
+          }
+        });
+
+        recognitionList.clear();
+        dialogIsOpen = true;
+
+      }
     }
+
+
+
+
+
   }
 
   protected void showFrameInfo(String frameInfo) {
@@ -635,6 +719,13 @@ public abstract class CameraActivity extends AppCompatActivity
     }
   }
 
+  private void setLanguage(Language language) {
+    if (this.language != language) {
+      LOGGER.d("Updating  Language: " + language);
+      this.language = language;
+    }
+  }
+
   protected int getNumThreads() {
     return numThreads;
   }
@@ -682,6 +773,8 @@ public abstract class CameraActivity extends AppCompatActivity
       setModel(Model.valueOf(parent.getItemAtPosition(pos).toString().toUpperCase()));
     } else if (parent == deviceSpinner) {
       setDevice(Device.valueOf(parent.getItemAtPosition(pos).toString()));
+    }else if (parent == languageSpinner) {
+      setLanguage(Language.valueOf(parent.getItemAtPosition(pos).toString()));
     }
   }
 

@@ -58,6 +58,11 @@ public abstract class Classifier {
     GPU
   }
 
+  public enum Language{
+    English,
+    Italian
+  }
+
   /** Number of results to show in the UI. */
   private static final int MAX_RESULTS = 3;
 
