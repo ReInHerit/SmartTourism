@@ -5,7 +5,7 @@
 5    <uses-sdk
 6        android:minSdkVersion="21"
 6-->C:\Users\Lorenzo\StudioProjects\SmartTourism\models\src\main\AndroidManifest.xml
-7        android:targetSdkVersion="28" />
+7        android:targetSdkVersion="29" />
 7-->C:\Users\Lorenzo\StudioProjects\SmartTourism\models\src\main\AndroidManifest.xml
 8
 9</manifest>

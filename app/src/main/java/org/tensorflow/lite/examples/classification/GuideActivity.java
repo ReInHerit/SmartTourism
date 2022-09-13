@@ -1,20 +1,20 @@
 package org.tensorflow.lite.examples.classification;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 
+import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -37,43 +37,69 @@ public class GuideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
 
-        ScrollView mainScrollView = (ScrollView)findViewById(R.id.idScrollView);
-        mainScrollView.fullScroll(ScrollView.FOCUS_UP);
-        mainScrollView.smoothScrollTo(0,0);
+
+        //NestedScrollView mainScrollView = findViewById(R.id.scrollNestedView);
+        //mainScrollView.fullScroll(NestedScrollView.FOCUS_UP);
+        //mainScrollView.smoothScrollTo(0,0);
+
 
         String monumentId = getIntent().getStringExtra("monument_id");
         String language = getIntent().getStringExtra("language");
 
-        Log.v(TAG,"Language: "+language);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.topAppBar);
+        toolbar.setTitle(monumentId);
 
-        loadGuidefromFile("guides/"+monumentId+"/testo.txt");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                finish();
+            }
+        });
+
+
         loadImageGuide("guides/"+monumentId+"/img.jpg");
+        loadGuidefromFile("guides/"+monumentId+"/"+language+"/testo.txt");
 
-        String path = "android.resource://" + getPackageName() + "/";
+
+        String pathVideo = "android.resource://" + getPackageName() + "/";
+        String pathAudio = "guides/"+monumentId+"/"+language+"/audio.mp3";
+
 
         switch (monumentId){
             case "Cattedrale Duomo":
-                path += R.raw.duomo;
+                if(language.equals("English"))
+                    pathVideo += R.raw.duomo_english;
+                else
+                    pathVideo += R.raw.duomo_italian;
                 break;
             case "Campanile Giotto":
-                path += R.raw.duomo;
+                if(language.equals("English"))
+                    pathVideo += R.raw.giotto_english;
+                else
+                    pathVideo += R.raw.giotto_italian;
                 break;
             case "Battistero SanGiovanni":
-                path += R.raw.duomo;
+                if(language.equals("English"))
+                    pathVideo += R.raw.battistero_english;
+                else
+                    pathVideo += R.raw.battistero_italian;
                 break;
             case "Loggia Bigallo":
-                path += R.raw.duomo;
+                if(language.equals("English"))
+                    pathVideo += R.raw.loggia_english;
+                else
+                    pathVideo += R.raw.loggia_italian;
                 break;
             case "Palazzo Vecchio":
-                path += R.raw.duomo;
+                if(language.equals("English"))
+                    pathVideo += R.raw.palazzo_english;
+                else
+                    pathVideo += R.raw.palazzo_italian;
                 break;
             default:
                 break;
         }
-
-
-        TextView titleTextView = findViewById(R.id.titleGuide);
-        titleTextView.setText(monumentId);
 
         TextView textTextView = findViewById(R.id.textGuide);
         textTextView.setText(text);
@@ -82,21 +108,22 @@ public class GuideActivity extends AppCompatActivity {
         imageImageView.setImageBitmap(img);
 
         VideoView videoView = findViewById(R.id.videoView);
-        Uri uri = Uri.parse(path);
-        videoView.setVideoURI(uri);
+        Uri uriVideo = Uri.parse(pathVideo);
+        videoView.setVideoURI(uriVideo);
+
         MediaController mediaController = new MediaController(this);
+        //mediaController.setMediaPlayer(videoView);
         mediaController.setAnchorView(videoView);
-        mediaController.setMediaPlayer(videoView);
         videoView.setMediaController(mediaController);
-        videoView.seekTo(1);
+        mediaController.setAnchorView(videoView);
+        videoView.seekTo(5);
         //videoView.start();
 
         Button playBtn = findViewById(R.id.idBtnPlay);
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // calling method to play audio.
-                playAudio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+                playAudio(pathAudio);
             }
         });
     }
@@ -142,13 +169,14 @@ public class GuideActivity extends AppCompatActivity {
         img = BitmapFactory.decodeStream(is);
     }
 
-    private void playAudio(String audioUrl) {
+    private void playAudio(String pathAudio) {
 
         if (mediaPlayer == null){
             mediaPlayer = new MediaPlayer();
             //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
-                mediaPlayer.setDataSource(audioUrl);
+                AssetFileDescriptor afd = getAssets().openFd(pathAudio);
+                mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
                 mediaPlayer.prepare();
             } catch (IOException e) {
                 e.printStackTrace();
