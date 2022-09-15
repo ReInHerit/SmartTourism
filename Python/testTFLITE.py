@@ -11,6 +11,11 @@ from preprocessors import AspectAwarePreprocessor
 augum = True
 np.set_printoptions(threshold=np.inf)
 
+
+image = cv2.imread('dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_004.JPG')
+retrievor = Retrievor('features/MobileNetV3_Large_100_features.pck')
+
+
 def recognize_image(image):
     # Location of tflite model file (int8 quantized)
     model_path = "models/lite-model_imagenet_mobilenet_v3_large_100_224_classification_5_default_1.tflite"  
@@ -43,7 +48,6 @@ def recognize_image(image):
 
 
 
-image = cv2.imread('dataFirenze\Palazzo_Vecchio\Palazzo_Vecchio_004.JPG')
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 # initialize process
@@ -65,7 +69,6 @@ out = recognize_image(imageNormal)
 out1 = recognize_image(imageZoom1)
 out2 = recognize_image(imageZoom2)
 
-retrievor = Retrievor('features/MobileNetV3_Large_100_features.pck')
 
 print("FAISS SEARCH: ")
 distance = retrievor.searchFAISS(out, depth=3, distance='euclidean')
