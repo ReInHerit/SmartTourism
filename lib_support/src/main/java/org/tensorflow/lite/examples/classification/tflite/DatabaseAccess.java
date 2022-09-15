@@ -81,13 +81,12 @@ public class DatabaseAccess {
         //i<k
         for (int i = 0; i<k; i++){
             Log.v("DatabaseAccess", "id from "+i+"/"+k+" to "+(i+1)+"/"+k);
-            Cursor cursor = database.rawQuery("SELECT * FROM AllInOne " +
-                    "WHERE rowid > "+i+" * (SELECT COUNT(*) FROM AllInOne)/"+k+" AND rowid <= ("+i+"+1) * (SELECT COUNT(*) FROM AllInOne)/"+k, null);
+            Cursor cursor = database.rawQuery("SELECT * FROM monuments " +
+                    "WHERE rowid > "+i+" * (SELECT COUNT(*) FROM monuments)/"+k+" AND rowid <= ("+i+"+1) * (SELECT COUNT(*) FROM monuments)/"+k, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                String style = cursor.getString(0);
-                String color =cursor.getString(1);
-                String matrix = cursor.getString(2);
+                String monument = cursor.getString(0);
+                String matrix = cursor.getString(1);
 
                 //Convert matrix string to Float
                 String[] splitted = matrix.substring(1,matrix.length() - 1).split("\\s+");
@@ -104,7 +103,7 @@ public class DatabaseAccess {
                 }
 
                 //element with converted matrix
-                Element e = new Element(style,color,listMatrix,-1);
+                Element e = new Element(monument,listMatrix,-1);
                 listDB.add(e);
 
                 cursor.moveToNext();

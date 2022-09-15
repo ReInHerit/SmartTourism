@@ -18,11 +18,11 @@ public class Retrievor {
         String dbName="";
 
         if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
-            dbName = "MN3Large100_v2.sqlite";
+            dbName = "MobileNetV3_Large_100_db.sqlite";
         } else if (model == Classifier.Model.MOBILENET_V3_LARGE_075) {
-            dbName = "MN3Large075_v2.sqlite";
+            dbName = "MobileNetV3_Large_075_db.sqlite";
         } else if (model == Classifier.Model.MOBILENET_V3_SMALL_100) {
-            dbName = "MN3Small100_v2.sqlite";
+            dbName = "MobileNetV3_Small_100_db.sqlite";
         } else {
             throw new UnsupportedOperationException();
         }
@@ -43,7 +43,7 @@ public class Retrievor {
             double distance = euclideanDistance(imgFeatures,element.getMatrix());
 
             if(distance < MAX_DISTANCE){
-                Element e = new Element(element.getStyle(),element.getColor(),element.getMatrix(),distance);
+                Element e = new Element(element.getMonument(), element.getMatrix(),distance);
                 list.add(e);
             }
         }
@@ -65,7 +65,7 @@ public class Retrievor {
 
             if(index != -1){
                 Element oldElement = DbList.get(index);
-                Element e = new Element(oldElement.getStyle(),oldElement.getColor(), oldElement.getMatrix(), squaredDistance);
+                Element e = new Element(oldElement.getMonument(), oldElement.getMatrix(), squaredDistance);
 
                 resultList.add(e);
             }

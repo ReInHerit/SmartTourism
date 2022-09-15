@@ -506,11 +506,9 @@ public abstract class Classifier {
 
     for (int i = 0; i < size; i++){
       Element e = results.get(i);
-      String color = e.getColor();
-      String style = e.getStyle();
       double distance = e.getDistance();
 
-      String newKey = color+" "+style;
+      String newKey = e.getMonument();
 
       if (labeledProbability.containsKey(newKey)){
         double value = labeledProbability.get(newKey);
@@ -528,11 +526,9 @@ public abstract class Classifier {
 
     for (int i = 0; i < size; i++){
       Element e = resultsZoom1.get(i);
-      String color = e.getColor();
-      String style = e.getStyle();
       double distance = e.getDistance();
 
-      String newKey = color+" "+style;
+      String newKey = e.getMonument();
 
       if (labeledProbability.containsKey(newKey)){
         double value = labeledProbability.get(newKey);
@@ -550,11 +546,9 @@ public abstract class Classifier {
 
     for (int i = 0; i < size; i++){
       Element e = resultsZoom2.get(i);
-      String color = e.getColor();
-      String style = e.getStyle();
       double distance = e.getDistance();
 
-      String newKey = color+" "+style;
+      String newKey =e.getMonument();
 
       if (labeledProbability.containsKey(newKey)){
         double value = labeledProbability.get(newKey);

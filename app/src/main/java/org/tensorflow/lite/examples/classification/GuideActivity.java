@@ -53,6 +53,7 @@ public class GuideActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+                stopAudio();
                 finish();
             }
         });

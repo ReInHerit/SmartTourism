@@ -119,6 +119,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private AlertDialog.Builder dialogBuilder;
   private AlertDialog dialog;
   private boolean dialogIsOpen = false;
+  private boolean sheetIsOpen = false;
 
   //Language
   private Spinner languageSpinner;
@@ -177,17 +178,27 @@ public abstract class CameraActivity extends AppCompatActivity
               case BottomSheetBehavior.STATE_EXPANDED:
                 {
                   bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_down);
+                  Log.v("CameraActivity", "STATE_EXPANDED");
+                  sheetIsOpen = true;
                 }
                 break;
               case BottomSheetBehavior.STATE_COLLAPSED:
                 {
                   bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
+                  Log.v("CameraActivity", "STATE_COLLAPSED");
+                  sheetIsOpen = false;
+
                 }
                 break;
               case BottomSheetBehavior.STATE_DRAGGING:
+                Log.v("CameraActivity", "STATE_DRAGGING");
+                sheetIsOpen = true;
+
                 break;
               case BottomSheetBehavior.STATE_SETTLING:
                 bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
+                Log.v("CameraActivity", "STATE_SETTLING");
+
                 break;
             }
           }
@@ -574,7 +585,7 @@ public abstract class CameraActivity extends AppCompatActivity
     Recognition recognition1 = null;
     Recognition recognition2 = null;
 
-    if (results != null && results.size() >= 1 && !dialogIsOpen) {
+    if (results != null && results.size() >= 1 && !dialogIsOpen && !sheetIsOpen) {
       recognition = results.get(0);
       if(results.size() >= 2)
         recognition1 = results.get(1);
