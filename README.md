@@ -132,7 +132,7 @@ Run 'build_sqlite.py'.
 ## Using a database created with a different neural network
 Go to `lib_support\src\main\java\org\tensorflow\lite\examples\classification\tflite`.
 1) Create a class that extends the `Classifier` class with a name that indicates the new neural network.
-TIP: Copy and paste the file "ClassifierMobileNetLarge100.java" and rename the file and class. Change the `getModelPath()` method to the filename of the new neural network.
+TIP: There is a template class named `ClassifierNewNeuralNetworkClass`. Rename the class and change the `getModelPath()` method with the filename of the new neural network.
 2) Modify the file `Classifier.java` by adding a name indicating the new model as in the example:
 
 ```java
