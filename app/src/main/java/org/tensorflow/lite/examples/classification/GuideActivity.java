@@ -196,9 +196,11 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     private void stopAudio(){
-        mediaPlayer.stop();
-        mediaPlayer.reset();
-        mediaPlayer.release();
-        mediaPlayer=null;
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer=null;
+        }
     }
 }
