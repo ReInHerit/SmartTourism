@@ -2,8 +2,11 @@ package org.tensorflow.lite.examples.classification.tflite;
 
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.ArrayList;
 
@@ -12,10 +15,11 @@ public class Retrievor {
 
     public static final String TAG = "Retrievor";
     private static final double MAX_DISTANCE = 1000000000;
-    private static final int K = 1; //Divisor to upload database
+    private static final int K = 5; //Divisor to upload database
 
-    public Retrievor(Context context, Classifier.Model model){
+    public Retrievor(Activity activity, Classifier.Model model){
         String dbName="";
+
 
         if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
             dbName = "MobileNetV3_Large_100_db.sqlite";
@@ -27,7 +31,7 @@ public class Retrievor {
             throw new UnsupportedOperationException();
         }
 
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context,dbName);
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(activity,dbName);
         databaseAccess.open();
         databaseAccess.updateDatabase(K);
         databaseAccess.close();

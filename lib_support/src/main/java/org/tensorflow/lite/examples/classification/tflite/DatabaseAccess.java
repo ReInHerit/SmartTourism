@@ -1,10 +1,14 @@
 package org.tensorflow.lite.examples.classification.tflite;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.view.View;
+
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +21,26 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
     private static ArrayList<Element> listDB = new ArrayList<>();
 
+
     /**
      * Private constructor to aboid object creation from outside classes.
      *
-     * @param context
+     * @param activity
      */
-    private DatabaseAccess(Context context, String dbName) {
-        this.openHelper = new DatabaseOpenHelper(context,dbName);
+    private DatabaseAccess(Activity activity , String dbName) {
+        this.openHelper = new DatabaseOpenHelper(activity,dbName);
+
     }
 
     /**
      * Return a singleton instance of DatabaseAccess.
      *
-     * @param context the Context
+     * @param activity the Activity
      * @return the instance of DabaseAccess
      */
-    public static DatabaseAccess getInstance(Context context, String dbName) {
+    public static DatabaseAccess getInstance(Activity activity, String dbName) {
         //if (instance == null) {
-            instance = new DatabaseAccess(context,dbName);
+            instance = new DatabaseAccess(activity,dbName);
         //}
         return instance;
     }
@@ -76,6 +82,7 @@ public class DatabaseAccess {
      */
 
     public void updateDatabase(int k) {
+
         database.isOpen();
         listDB = new ArrayList<>();
         //i<k
@@ -110,7 +117,6 @@ public class DatabaseAccess {
             }
             cursor.close();
         }
-
 
     }
 

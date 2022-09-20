@@ -28,6 +28,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.MappedByteBuffer;
@@ -368,11 +370,11 @@ public abstract class Classifier {
     Log.v(TAG,"features zoom 2: "+app2);
     */
 
-    Log.v(TAG,"result: "+ result);
-    Log.v(TAG,"result zoom 1: "+resultZoom1);
-    Log.v(TAG,"result zoom 2: "+resultZoom2);
+    //Log.v(TAG,"result: "+ result);
+    //Log.v(TAG,"result zoom 1: "+resultZoom1);
+    //Log.v(TAG,"result zoom 2: "+resultZoom2);
 
-    Log.v(TAG,"finalResult: "+finalResult);
+    //Log.v(TAG,"finalResult: "+finalResult);
 
     return finalResult;
   }

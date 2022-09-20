@@ -17,6 +17,7 @@
 package org.tensorflow.lite.examples.classification;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -128,7 +129,6 @@ public abstract class CameraActivity extends AppCompatActivity
   private Language language = Language.English;
 
   //Loading
-
   private CircularProgressIndicator loadingIndicator;
 
   @Override
@@ -136,13 +136,15 @@ public abstract class CameraActivity extends AppCompatActivity
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
     setContentView(R.layout.tfe_ic_activity_camera);
 
     loadingIndicator = findViewById(R.id.progressIndicator);
 
     loadingIndicator.bringToFront();
-    loadingIndicator.setVisibility(View.VISIBLE);
+    //loadingIndicator.setVisibility(View.VISIBLE);
 
     if (hasPermission()) {
       setFragment();
@@ -281,6 +283,7 @@ public abstract class CameraActivity extends AppCompatActivity
       return;
     }
 
+
     isProcessingFrame = true;
     yuvBytes[0] = bytes;
     yRowStride = previewWidth;
@@ -311,9 +314,11 @@ public abstract class CameraActivity extends AppCompatActivity
           }
         };
 
-    loadingIndicator.setVisibility(View.GONE);
 
     processImage();
+
+    //loadingIndicator.setVisibility(View.GONE);
+
 
     //Log.v("CameraActivity", "processImage Camera1");
   }
@@ -394,6 +399,8 @@ public abstract class CameraActivity extends AppCompatActivity
   public synchronized void onResume() {
     LOGGER.d("onResume " + this);
     super.onResume();
+
+    loadingIndicator.setVisibility(View.VISIBLE);
 
 
     //I added this if to continue using camera after having closed app
@@ -650,6 +657,9 @@ public abstract class CameraActivity extends AppCompatActivity
 
       if(recognitionList.size() >= 3){
         //show button more info
+        loadingIndicator.setVisibility(View.GONE);
+
+
         Recognition finalRecognition = recognition;
 
         dialogBuilder = new AlertDialog.Builder(this);
@@ -683,6 +693,8 @@ public abstract class CameraActivity extends AppCompatActivity
             //define button function
             dialog.dismiss();
             dialogIsOpen=false;
+            loadingIndicator.setVisibility(View.VISIBLE);
+
           }
         });
 
@@ -802,6 +814,8 @@ public abstract class CameraActivity extends AppCompatActivity
       setDevice(Device.valueOf(parent.getItemAtPosition(pos).toString()));
     }else if (parent == languageSpinner) {
       setLanguage(Language.valueOf(parent.getItemAtPosition(pos).toString()));
+      // hide selection text
+      ((TextView)view).setText(null);
     }
   }
 

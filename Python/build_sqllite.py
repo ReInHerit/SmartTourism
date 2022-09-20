@@ -2,13 +2,11 @@
 import glob
 import argparse
 import progressbar
-from sklearn.model_selection import train_test_split
 import numpy as np
 from scripts import Extractor
 from preprocessors import AspectAwarePreprocessor
 from preprocessors import ImageToArrayPreprocessor
 import cv2
-import pickle
 import os
 import sqlite3
 

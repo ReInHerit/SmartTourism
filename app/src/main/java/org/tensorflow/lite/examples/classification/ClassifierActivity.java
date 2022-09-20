@@ -29,6 +29,8 @@ import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -137,7 +139,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     runInBackground(() -> recreateClassifier(model, device, numThreads));
   }
 
-  private void recreateClassifier(Model model, Device device, int numThreads) {
+  private void recreateClassifier(Model model, Device device, int numThreads ) {
     if (classifier != null) {
       LOGGER.d("Closing classifier.");
       classifier.close();

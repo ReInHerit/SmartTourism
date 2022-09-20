@@ -39,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:showAnimationBehavior="inward"
             app:hideAnimationBehavior="inward"
-            android:visibility="visible"
+            android:visibility="gone"
 
             />
 
@@ -70,7 +70,7 @@
             android:layout_width="300dp"
             android:layout_height="45dp"
             android:layout_marginStart="-10dp"
-            android:src="@drawable/logo_app"
+            android:src="@drawable/logo_1"
             app:layout_constraintBottom_toBottomOf="@+id/topAppBar"
             app:layout_constraintEnd_toStartOf="@+id/language_spinner"
             app:layout_constraintStart_toStartOf="@+id/topAppBar"
@@ -88,6 +88,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:entries="@array/language_array"
                 android:dropDownHorizontalOffset="-20dp"
+
 
                 >
             </androidx.appcompat.widget.AppCompatSpinner>
