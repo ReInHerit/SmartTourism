@@ -22,7 +22,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 <div align="center">
-  <img src="images/app_main.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
+  <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
 </div>
 </br>
 
