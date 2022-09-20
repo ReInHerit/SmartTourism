@@ -72,6 +72,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     borderedText = new BorderedText(textSizePx);
     borderedText.setTypeface(Typeface.MONOSPACE);
 
+
     recreateClassifier(getModel(), getDevice(), getNumThreads());
     if (classifier == null) {
       LOGGER.e("No classifier on preview!");

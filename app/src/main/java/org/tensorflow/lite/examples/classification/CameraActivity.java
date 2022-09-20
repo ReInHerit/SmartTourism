@@ -55,6 +55,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -125,6 +127,10 @@ public abstract class CameraActivity extends AppCompatActivity
   private Spinner languageSpinner;
   private Language language = Language.English;
 
+  //Loading
+
+  private CircularProgressIndicator loadingIndicator;
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -132,6 +138,11 @@ public abstract class CameraActivity extends AppCompatActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     setContentView(R.layout.tfe_ic_activity_camera);
+
+    loadingIndicator = findViewById(R.id.progressIndicator);
+
+    loadingIndicator.bringToFront();
+    loadingIndicator.setVisibility(View.VISIBLE);
 
     if (hasPermission()) {
       setFragment();
@@ -299,6 +310,9 @@ public abstract class CameraActivity extends AppCompatActivity
             isProcessingFrame = false;
           }
         };
+
+    loadingIndicator.setVisibility(View.GONE);
+
     processImage();
 
     //Log.v("CameraActivity", "processImage Camera1");
@@ -519,6 +533,7 @@ public abstract class CameraActivity extends AppCompatActivity
   }
 
   protected void setFragment() {
+
     String cameraId = chooseCamera();
 
     Fragment fragment;
@@ -545,6 +560,7 @@ public abstract class CameraActivity extends AppCompatActivity
     }
 
     getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+
   }
 
   protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {
