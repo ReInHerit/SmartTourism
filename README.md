@@ -4,10 +4,8 @@
 <br />
 <div align="center">
   <a href="https://github.com/lorenzo-massa/SmartTourism">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo_app.png" alt="Logo" width="400" height="80">
   </a>
-
-<h3 align="center">Smart Tourism</h3>
 
   <p align="center">
     Image recognition for android devices
@@ -15,8 +13,6 @@
     <a href="https://github.com/lorenzo-massa/SmartTourism"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/lorenzo-massa/SmartTourism">View Demo</a>
-    ·
     <a href="https://github.com/lorenzo-massa/SmartTourism/issues">Report Bug</a>
     ·
     <a href="https://github.com/lorenzo-massa/SmartTourism/issues">Request Feature</a>
@@ -25,24 +21,29 @@
 
 <!-- GETTING STARTED -->
 ## Getting Started
+<div align="center">
+  <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
+</div>
+</br>
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+The repository consists of two parts:
+* Python
+* Android
+
+The python part is used to generate sqlite files from an image dataset and you should edit it only if you want to use another neural network or another image dataset.
+The android application is ready to use and you should change it just to add files to the monuments guides.
+
+You will find all the instuction you need just below.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-`project_description`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Python library requires:
+* numpy
+* cv2
+* tflite
+* faiss
 
 ## Database creation
-
 The repository contains the file `Python/build_sqlite.py` which must be executed by adding the characters `-i` or `--images` indicating the path to the dataset folder as in the following example:
 
 ```sh
@@ -76,26 +77,26 @@ dataset
 
 ```
 
-The file `build_sqlite.py` will create three .sqlite files within the indicated folder after the sript execution is complete. Each file is created with a different neural network. To change neural network see dedicated paagraph.
+The file `build_sqlite.py` will create three `.sqlite` files. Each file is created with a different neural network. To change the neural network see dedicated paagraph.
 
 IMORTANT: Do not change the names of the files created.
 
-## Add files (audio,text,image) for monument guidance.
+## Add files (audio,text,image) for monument guide
 Go to the `models\src\main\assets\guides` folder. Inside it there is the folder `Template Monument` which is to be used as a template, so without altering its structure. It is only possible to change the name of the folder with the name of the monument which, however, must be the same uilized in the dataset folder.</br>
 Text files, audio files and an image can be placed in this folder. The text and audio files must be placed in the folder corresponding to the language.
 
-IMPORTANT: The inserted files must have the same name as the files in the template folder.
+IMPORTANT: New files must have the same name as the files in the template folder.
 
 NOTE: For the time being, Italian and English languages are supported.
 
 ## Add videos for the monument guide
-To add videos you need to go to `app/src/main/res/raw`. Here you can add any video in .mp4 format.
+Go to `app/src/main/res/raw`. Here you can add any video in .mp4 format.
 
 IMPORTANT: The name of the video must not contain any spaces.
 
 TIP: Give the video a meaningful name.
 
-Edit `app/src/main/java/org/tensorflow/lite/examples/classification/GuideActivity.java`.
+Open `app/src/main/java/org/tensorflow/lite/examples/classification/GuideActivity.java`.
 Add a case to the switch construct with the name of the monument (must be the same as the name of the dataset folder), as in the example:
 ```java
 case "Palazzo Vecchio":
@@ -130,9 +131,9 @@ Run 'build_sqlite.py'.
 
 ## Using a database created with a different neural network
 Go to `lib_support\src\main\java\org\tensorflow\lite\examples\classification\tflite`.
-1) Create a class that extends the Classifier class with a name that indicates the new neural network.
-TIP: Copy and paste the file "ClassifierMobileNetLarge100.java" and rename the file and class. Change the getModelPath() method to the filename of the new neural network.
-2) Modify the file "Classifier.java" by adding a name indicating the new model as in the example:
+1) Create a class that extends the `Classifier` class with a name that indicates the new neural network.
+TIP: There is a template class named `ClassifierNewNeuralNetworkClass`. Rename the class and change the `getModelPath()` method with the filename of the new neural network.
+2) Modify the file `Classifier.java` by adding a name indicating the new model as in the example:
 
 ```java
 /** The model type used for classification. */
@@ -143,7 +144,7 @@ TIP: Copy and paste the file "ClassifierMobileNetLarge100.java" and rename the f
     NEWMODEL_NAME
   }
 ```
-3) Modify the create(Activity, Model, Device, int) method by adding an else if with the previously created class and model:
+3) Modify the `create(Activity, Model, Device, int)` method by adding an else if with the previously created class and model:
 
 ```java
 if (model == Model.MOBILENET_V3_LARGE_100) {
@@ -159,7 +160,7 @@ if (model == Model.MOBILENET_V3_LARGE_100) {
     }
  ```
  
-4) Modify the "Retrievor.java" file by adding an if in the Retrievor(Context, Cassifier.model) method as in the example:
+4) Modify `Retrievor.java` by adding an if in the `Retrievor(Context, Cassifier.model)` constructor method as in the example:
 
 ```java
 if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
@@ -175,7 +176,7 @@ if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
         }
 ```
 
-"newDatabaseFile.sqlite" is the file that is created in the previous paragraph.
+`newDatabaseFile.sqlite` is the new sqlite file that is the created in the previous paragraph.
 
 5) Finally edit the file `app/src/main/res/values/strings.xml` by inserting the name of the new model in `string-array name="tfe_ic_models"` as in the example:
 
