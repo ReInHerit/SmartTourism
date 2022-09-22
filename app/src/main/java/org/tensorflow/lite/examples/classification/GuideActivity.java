@@ -38,14 +38,14 @@ public class GuideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-
         setContentView(R.layout.activity_guide);
 
-
-        //NestedScrollView mainScrollView = findViewById(R.id.scrollNestedView);
-        //mainScrollView.fullScroll(NestedScrollView.FOCUS_UP);
-        //mainScrollView.smoothScrollTo(0,0);
+        NestedScrollView mainScrollView = findViewById(R.id.scrollNestedView);
+        mainScrollView.post(new Runnable() {
+            public void run() {
+                mainScrollView.fullScroll(View.FOCUS_UP);
+            }
+        });
 
 
         String monumentId = getIntent().getStringExtra("monument_id");
@@ -64,41 +64,41 @@ public class GuideActivity extends AppCompatActivity {
         });
 
 
-        loadImageGuide("guides/"+monumentId+"/img.jpg");
-        loadGuidefromFile("guides/"+monumentId+"/"+language+"/testo.txt");
+        loadImageGuide("guides/" + monumentId + "/img.jpg");
+        loadGuidefromFile("guides/" + monumentId + "/" + language + "/testo.txt");
 
 
         String pathVideo = "android.resource://" + getPackageName() + "/";
-        String pathAudio = "guides/"+monumentId+"/"+language+"/audio.mp3";
+        String pathAudio = "guides/" + monumentId + "/" + language + "/audio.mp3";
 
 
-        switch (monumentId){
+        switch (monumentId) {
             case "Cattedrale Duomo":
-                if(language.equals("English"))
+                if (language.equals("English"))
                     pathVideo += R.raw.duomo_english;
                 else
                     pathVideo += R.raw.duomo_italian;
                 break;
             case "Campanile Giotto":
-                if(language.equals("English"))
+                if (language.equals("English"))
                     pathVideo += R.raw.giotto_english;
                 else
                     pathVideo += R.raw.giotto_italian;
                 break;
             case "Battistero SanGiovanni":
-                if(language.equals("English"))
+                if (language.equals("English"))
                     pathVideo += R.raw.battistero_english;
                 else
                     pathVideo += R.raw.battistero_italian;
                 break;
             case "Loggia Bigallo":
-                if(language.equals("English"))
+                if (language.equals("English"))
                     pathVideo += R.raw.loggia_english;
                 else
                     pathVideo += R.raw.loggia_italian;
                 break;
             case "Palazzo Vecchio":
-                if(language.equals("English"))
+                if (language.equals("English"))
                     pathVideo += R.raw.palazzo_english;
                 else
                     pathVideo += R.raw.palazzo_italian;
@@ -134,7 +134,7 @@ public class GuideActivity extends AppCompatActivity {
         });
     }
 
-    private void loadGuidefromFile(String fileName){
+    private void loadGuidefromFile(String fileName) {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
@@ -143,7 +143,7 @@ public class GuideActivity extends AppCompatActivity {
             // do reading, usually loop until end of file reading
             String mLine;
             //while ((mLine = reader.readLine()) != null) {
-                //process line
+            //process line
             //    Log.v(TAG, mLine);
             //}
 
@@ -163,12 +163,12 @@ public class GuideActivity extends AppCompatActivity {
         }
     }
 
-    private void loadImageGuide(String fileName){
+    private void loadImageGuide(String fileName) {
         AssetManager am = getAssets();
         InputStream is = null;
-        try{
+        try {
             is = am.open(fileName);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -177,12 +177,12 @@ public class GuideActivity extends AppCompatActivity {
 
     private void playAudio(String pathAudio) {
 
-        if (mediaPlayer == null){
+        if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
                 AssetFileDescriptor afd = getAssets().openFd(pathAudio);
-                mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+                mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                 mediaPlayer.prepare();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -200,12 +200,12 @@ public class GuideActivity extends AppCompatActivity {
 
     }
 
-    private void stopAudio(){
-        if(mediaPlayer != null){
+    private void stopAudio() {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.reset();
             mediaPlayer.release();
-            mediaPlayer=null;
+            mediaPlayer = null;
         }
     }
 }

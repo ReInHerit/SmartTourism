@@ -10,7 +10,7 @@ public class Element {
     private final float[] matrix;
 
 
-    public Element (String monument,float[] matrix, double distance){
+    public Element(String monument, float[] matrix, double distance) {
         this.monument = monument;
         this.distance = distance;
         this.matrix = matrix;
@@ -24,7 +24,9 @@ public class Element {
         return monument;
     }
 
-    public float[] getMatrix(){ return matrix;}
+    public float[] getMatrix() {
+        return matrix;
+    }
 
     @NonNull
     @Override
