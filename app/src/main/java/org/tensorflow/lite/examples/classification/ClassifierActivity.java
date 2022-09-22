@@ -81,6 +81,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
       return;
     }
 
+
     previewWidth = size.getWidth();
     previewHeight = size.getHeight();
 

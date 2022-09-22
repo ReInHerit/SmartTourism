@@ -88,6 +88,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:entries="@array/language_array"
                 android:dropDownHorizontalOffset="-20dp"
+                android:textAlignment="center"
+
 
 
                 >

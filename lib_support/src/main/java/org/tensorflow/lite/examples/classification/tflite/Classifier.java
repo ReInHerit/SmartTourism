@@ -25,6 +25,7 @@ import android.graphics.RectF;
 import android.os.SystemClock;
 import android.os.Trace;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -63,9 +64,9 @@ public abstract class Classifier {
 
   /** The model type used for classification. */
   public enum Model {
-    MOBILENET_V3_LARGE_100,
-    MOBILENET_V3_LARGE_075,
-    MOBILENET_V3_SMALL_100,
+    PRECISE, //MOBILENET_V3_LARGE_100
+    MEDIUM, //MOBILENET_V3_LARGE_075
+    FAST, //OBILENET_V3_SMALL_100
     QUANTIZED_MOBILENET
   }
 
@@ -141,11 +142,11 @@ public abstract class Classifier {
 
     retrievor = new Retrievor(activity,model);
 
-    if (model == Model.MOBILENET_V3_LARGE_100) {
+    if (model == Model.PRECISE) {
       return new ClassifierMobileNetLarge100(activity, device, numThreads);
-    } else if (model == Model.MOBILENET_V3_LARGE_075) {
+    } else if (model == Model.MEDIUM) {
       return new ClassifierMobileNetLarge075(activity, device, numThreads);
-    } else if (model == Model.MOBILENET_V3_SMALL_100) {
+    } else if (model == Model.FAST) {
       return new ClassifierMobileNetSmall100(activity, device, numThreads);
     } else {
       throw new UnsupportedOperationException();
@@ -250,6 +251,7 @@ public abstract class Classifier {
         } else {
           tfliteOptions.setUseXNNPACK(true);
           Log.d(TAG, "GPU not supported. Default to CPU.");
+          Toast.makeText(context,"GPU not supported. Default to CPU.",Toast.LENGTH_SHORT);
         }
         break;
       case CPU:

@@ -17,12 +17,15 @@
 package org.tensorflow.lite.examples.classification;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -58,6 +61,7 @@ import androidx.annotation.UiThread;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,7 +117,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private Spinner deviceSpinner;
   private TextView threadsTextView;
 
-  private Model model = Model.MOBILENET_V3_LARGE_100;
+  private Model model = Model.PRECISE;
   private Device device = Device.CPU;
   private int numThreads = -1;
 
@@ -144,10 +148,10 @@ public abstract class CameraActivity extends AppCompatActivity
     loadingIndicator = findViewById(R.id.progressIndicator);
 
     loadingIndicator.bringToFront();
-    //loadingIndicator.setVisibility(View.VISIBLE);
+
 
     if (hasPermission()) {
-      setFragment();
+      setFragment(); //first creation of classifier
     } else {
       requestPermission();
     }
@@ -162,6 +166,10 @@ public abstract class CameraActivity extends AppCompatActivity
     gestureLayout = findViewById(R.id.gesture_layout);
     sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
     bottomSheetArrowImageView = findViewById(R.id.bottom_sheet_arrow);
+
+    //@SuppressLint("ResourceType") ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,R.array.language_array);
+
+
 
     ViewTreeObserver vto = gestureLayout.getViewTreeObserver();
     vto.addOnGlobalLayoutListener(
@@ -245,6 +253,13 @@ public abstract class CameraActivity extends AppCompatActivity
     language = Language.valueOf(languageSpinner.getSelectedItem().toString());
     numThreads = Integer.parseInt(threadsTextView.getText().toString().trim());
 
+    //languageSpinner.setAdapter(new SpinnerAdapter(getContext(), new String[]{"Overview", "Story", "Specifications", "Poll", "Video"}, accentColor, backgroundColor));
+    languageSpinner.setSelection(0,true);
+    View v = languageSpinner.getSelectedView();
+    ((TextView)v).setTextSize(15);
+    ((TextView)v).setTextColor(Color.WHITE);
+    ((TextView)v).bringToFront();
+    ((TextView)v).setTypeface((((TextView)v).getTypeface()), Typeface.BOLD);
   }
 
   protected int[] getRgbBytes() {
@@ -813,9 +828,14 @@ public abstract class CameraActivity extends AppCompatActivity
     } else if (parent == deviceSpinner) {
       setDevice(Device.valueOf(parent.getItemAtPosition(pos).toString()));
     }else if (parent == languageSpinner) {
-      setLanguage(Language.valueOf(parent.getItemAtPosition(pos).toString()));
-      // hide selection text
-      ((TextView)view).setText(null);
+      String s = parent.getItemAtPosition(pos).toString();
+      setLanguage(Language.valueOf(s));
+      ((TextView)view).setText(s.substring(0,2).toUpperCase());
+      ((TextView)view).setTextSize(15);
+      ((TextView)view).setTextColor(Color.WHITE);
+      ((TextView)view).bringToFront();
+      ((TextView)view).setTypeface((((TextView)view).getTypeface()), Typeface.BOLD);
+
     }
   }
 
