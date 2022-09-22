@@ -25,7 +25,9 @@
   <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
 </div>
 </br>
-
+How to generate the APK: https://code.tutsplus.com/tutorials/how-to-generate-apk-and-signed-apk-files-in-android-studio--cms-37927
+</br>
+</br>
 The repository consists of two parts:
 * Python
 * Android
@@ -108,6 +110,8 @@ case "Palazzo Vecchio":
 ```
 
 Replace the name of the new english video to "palazzo_english" and the name of the new italian video to "palazzo_italian".
+
+IMPORTANT: Original videos are not invluded in the repo because of their large size.
 
 
 ### ONLY FOR EXPERT USERS
