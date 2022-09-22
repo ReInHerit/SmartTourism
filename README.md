@@ -19,15 +19,17 @@
   </p>
 </div>
 
-<!-- GETTING STARTED -->
 ## Getting Started
 <div align="center">
   <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
 </div>
-</br>
-How to generate the APK: https://code.tutsplus.com/tutorials/how-to-generate-apk-and-signed-apk-files-in-android-studio--cms-37927
-</br>
-</br>
+
+### APK
+You will find the APK in `app/build/outputs/apk/support/debug` . 
+
+If you wanto to generate another APK file take a look on the following guide: https://code.tutsplus.com/tutorials/how-to-generate-apk-and-signed-apk-files-in-android-studio--cms-37927
+
+### Guide
 The repository consists of two parts:
 * Python
 * Android
