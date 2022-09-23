@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/lorenzo-massa/SmartTourism">
-    <img src="images/logo_app.png" alt="Logo" width="400" height="80">
+    <img src="images/logo_1.png" alt="Logo" width="400" height="80">
   </a>
 
   <p align="center">
@@ -21,7 +21,7 @@
 
 ## Getting Started
 <div align="center">
-  <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
+  <img src="images/screen1.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/screen2.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/screen3.png" alt="Logo" width="200" height="380">
 </div>
 
 ### APK
