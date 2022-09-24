@@ -45,7 +45,8 @@ Python library requires:
 * numpy
 * cv2
 * tflite
-* faiss
+* faiss (Anaconda required)
+* pickle
 
 ## Database creation
 The repository contains the file `Python/build_sqlite.py` which must be executed by adding the characters `-i` or `--images` indicating the path to the dataset folder as in the following example:
