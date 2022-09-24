@@ -34,7 +34,7 @@ The repository consists of two parts:
 * Python
 * Android
 
-The python part is used to generate sqlite files from an image dataset and you should edit it only if you want to use another neural network or another image dataset.
+The python part is used to generate sqlite files from an image dataset. You should use and edit this part only if you want to use another neural network or image dataset.
 The android application is ready to use and you should change it just to add files to the monuments guides.
 
 You will find all the instuction you need just below.
@@ -82,7 +82,7 @@ dataset
 
 ```
 
-The file `build_sqlite.py` will create three `.sqlite` files. Each file is created with a different neural network. To change the neural network see dedicated paagraph.
+The file `build_sqlite.py` will create three `.sqlite` and `.pck` files. Each pair of files is created with a different neural network. To change the neural network see dedicated paagraph.
 
 IMORTANT: Do not change the names of the files created.
 
@@ -120,17 +120,15 @@ IMPORTANT: Original videos are not invluded in the repo because of their large s
 ### ONLY FOR EXPERT USERS
 
 ## Creating the database with different neural networks
-Place the neural network `.tflite` in the folders:
-* Python/models
-* Models/src/main/assets
-Open the file `build_sqlite.py` and add the name of the neural network, including the file extension, to the "types" list. Example:
+Place the neural network model `.tflite` in `Models/src/main/assets`.
+Open the file `build_sqlite.py`: add the name of the neural network and the model path to the "types" list. Example:
 
 ```python
 types = [ #neural networks
-    'MobileNetV3_Large_100',
-    'MobileNetV3_Large_075',
-    'MobileNetV3_Small_100',
-    'newNeuralNetwork.tflite'
+    ('MobileNetV3_Large_100', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_large_100_224_classification_5_default_1.tflite'), 
+    ('MobileNetV3_Large_075', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_large_075_224_classification_5_default_1.tflite'),
+    ('MobileNetV3_Small_100', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_small_100_224_classification_5_default_1.tflite'),
+    ('newNeuralNetworkModel.tflite', 'pathNewNeauralNetworkModel.tflite')
 ]
 ```
 
