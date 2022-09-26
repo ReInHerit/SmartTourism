@@ -46,20 +46,20 @@ Python library requires:
 * cv2
 * tflite
 * faiss (Anaconda required)
-* pickle
+* sklearn
 
 ## Database creation
-The repository contains the file `Python/build_sqlite.py` which must be executed by adding the characters `-i` or `--images` indicating the path to the dataset folder as in the following example:
+The repository contains the file `Python/build_sqlite.py` which must be executed by adding the argument `-i` or `--images` indicating the path to the dataset folder as in the following example:
 
 ```sh
-python build_sqlite.py -i datasetFolderPath
+python build_sqlite.py -i datasetFolder
 ```
 
 IMPORTANT: The indicated folder must contains one folder per monument and each of which contains the images, as in the following example:
 
 ```
 
-dataset
+datasetFolder
 ├───Battistero_SanGiovanni
 │       img1.jpg
 │       img2.jpg
