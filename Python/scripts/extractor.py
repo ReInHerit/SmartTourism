@@ -15,39 +15,18 @@ import pathlib
 
 
 class Extractor:
-    def __init__(self, dsc_type, vector_size=32):
+    def __init__(self, dsc_type, path, vector_size=32):
         self.size = vector_size
         self.type = dsc_type
         self.preprocess = None
-        self.extractor = self.__create_descriptor()
+        self.extractor = self.__create_descriptor(path)
 
-    def __create_descriptor(self):
-        if self.type == 'MobileNetV3_Large_100':
-            self.preprocess = tf.keras.applications.mobilenet_v2.preprocess_input
-            interpreter = tf.lite.Interpreter(model_path="models/lite-model_imagenet_mobilenet_v3_large_100_224_classification_5_default_1.tflite")
-            self.input_details = interpreter.get_input_details()
-            self.output_details = interpreter.get_output_details()
-            return interpreter
-        elif self.type == 'MobileNetV3_Large_075':
-            self.preprocess = tf.keras.applications.mobilenet_v2.preprocess_input
-            interpreter = tf.lite.Interpreter(model_path="models/lite-model_imagenet_mobilenet_v3_large_075_224_classification_5_default_1.tflite")
-            self.input_details = interpreter.get_input_details()
-            self.output_details = interpreter.get_output_details()
-            return interpreter
-        elif self.type == 'MobileNetV3_Small_100':
-            self.preprocess = tf.keras.applications.mobilenet_v2.preprocess_input
-            interpreter = tf.lite.Interpreter(model_path="models/lite-model_imagenet_mobilenet_v3_small_100_224_classification_5_default_1.tflite")
-            self.input_details = interpreter.get_input_details()
-            self.output_details = interpreter.get_output_details()
-            return interpreter
-        elif self.type == 'autoencoder':
-            return load_model('./outputs/encoder.h5')
-        else:
-            self.preprocess = tf.keras.applications.mobilenet_v2.preprocess_input
-            interpreter = tf.lite.Interpreter(model_path="models/"+self.type)
-            self.input_details = interpreter.get_input_details()
-            self.output_details = interpreter.get_output_details()
-            return interpreter
+    def __create_descriptor(self,path):
+        self.preprocess = tf.keras.applications.mobilenet_v2.preprocess_input
+        interpreter = tf.lite.Interpreter(model_path=path)
+        self.input_details = interpreter.get_input_details()
+        self.output_details = interpreter.get_output_details()
+        return interpreter
 
     def descript(self, image):
         # Dinding image keypoints
@@ -71,6 +50,7 @@ class Extractor:
         return np.array(dsc)
 
     def compress(self, image):
+        
         if self.preprocess:
             image = self.preprocess(image)
         image = np.expand_dims(image, axis=0)

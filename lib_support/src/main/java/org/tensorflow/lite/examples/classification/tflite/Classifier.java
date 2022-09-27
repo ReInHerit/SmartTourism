@@ -20,7 +20,6 @@ import static java.lang.Math.min;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.os.SystemClock;
 import android.os.Trace;

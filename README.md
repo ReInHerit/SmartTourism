@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/lorenzo-massa/SmartTourism">
-    <img src="images/logo_app.png" alt="Logo" width="400" height="80">
+    <img src="images/logo_1.png" alt="Logo" width="400" height="80">
   </a>
 
   <p align="center">
@@ -21,7 +21,7 @@
 
 ## Getting Started
 <div align="center">
-  <img src="images/app_monument.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_guide.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/app_settings.png" alt="Logo" width="200" height="380">
+  <img src="images/screen1.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/screen2.png" alt="Logo" width="200" height="380"> &nbsp; &nbsp; &nbsp; <img src="images/screen3.png" alt="Logo" width="200" height="380">
 </div>
 
 ### APK
@@ -34,7 +34,7 @@ The repository consists of two parts:
 * Python
 * Android
 
-The python part is used to generate sqlite files from an image dataset and you should edit it only if you want to use another neural network or another image dataset.
+The python part is used to generate sqlite files from an image dataset. You should use and edit this part only if you want to use another neural network or image dataset.
 The android application is ready to use and you should change it just to add files to the monuments guides.
 
 You will find all the instuction you need just below.
@@ -45,20 +45,21 @@ Python library requires:
 * numpy
 * cv2
 * tflite
-* faiss
+* faiss (Anaconda required)
+* sklearn
 
 ## Database creation
-The repository contains the file `Python/build_sqlite.py` which must be executed by adding the characters `-i` or `--images` indicating the path to the dataset folder as in the following example:
+The repository contains the file `Python/build_sqlite.py` which must be executed by adding the argument `-i` or `--images` indicating the path to the dataset folder as in the following example:
 
 ```sh
-python build_sqlite.py -i datasetFolderPath
+python build_sqlite.py -i datasetFolder
 ```
 
 IMPORTANT: The indicated folder must contains one folder per monument and each of which contains the images, as in the following example:
 
 ```
 
-dataset
+datasetFolder
 ├───Battistero_SanGiovanni
 │       img1.jpg
 │       img2.jpg
@@ -81,7 +82,7 @@ dataset
 
 ```
 
-The file `build_sqlite.py` will create three `.sqlite` files. Each file is created with a different neural network. To change the neural network see dedicated paagraph.
+The file `build_sqlite.py` will create three `.sqlite` and `.pck` files. Each pair of files is created with a different neural network. To change the neural network see dedicated paagraph.
 
 IMORTANT: Do not change the names of the files created.
 
@@ -119,17 +120,15 @@ IMPORTANT: Original videos are not invluded in the repo because of their large s
 ### ONLY FOR EXPERT USERS
 
 ## Creating the database with different neural networks
-Place the neural network `.tflite` in the folders:
-* Python/models
-* Models/src/main/assets
-Open the file `build_sqlite.py` and add the name of the neural network, including the file extension, to the "types" list. Example:
+Place the neural network model `.tflite` in `Models/src/main/assets`.
+Open the file `build_sqlite.py`: add the name of the neural network and the model path to the "types" list. Example:
 
 ```python
 types = [ #neural networks
-    'MobileNetV3_Large_100',
-    'MobileNetV3_Large_075',
-    'MobileNetV3_Small_100',
-    'newNeuralNetwork.tflite'
+    ('MobileNetV3_Large_100', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_large_100_224_classification_5_default_1.tflite'), 
+    ('MobileNetV3_Large_075', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_large_075_224_classification_5_default_1.tflite'),
+    ('MobileNetV3_Small_100', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_small_100_224_classification_5_default_1.tflite'),
+    ('newNeuralNetworkModel.tflite', 'pathNewNeauralNetworkModel.tflite')
 ]
 ```
 
