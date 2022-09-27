@@ -9,22 +9,35 @@ from preprocessors import ImageToArrayPreprocessor
 import cv2
 import os
 import sqlite3
+import pickle
+from sklearn.model_selection import train_test_split
 
 np.set_printoptions(threshold=np.inf)
 
 types = [ #neural networks
-    'MobileNetV3_Large_100',
-    'MobileNetV3_Large_075',
-    'MobileNetV3_Small_100',
+    ('MobileNetV3_Large_100', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_large_100_224_classification_5_default_1.tflite'), 
+    ('MobileNetV3_Large_075', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_large_075_224_classification_5_default_1.tflite'),
+    ('MobileNetV3_Small_100', '../models/src/main/assets/lite-model_imagenet_mobilenet_v3_small_100_224_classification_5_default_1.tflite')
 ]
 
+#Set ALL_DATASET True if you want to use all the images of the dataset to train the model, False if you want to split the datset in train_set and test_set
+ALL_DATASET = False
+
 ap = argparse.ArgumentParser()
-ap.add_argument('-i', '--images', help='path of images')
+ap.add_argument('-i', '--images', help='path of datset images')
 args = vars(ap.parse_args())
 
-#LOAD IMAGE PATHS
-
+# LOAD IMAGE PATHS
 dataImages = glob.glob(args['images']+"*/*/*.jpg")
+dataset = list()
+
+# GENERATING SETS
+if not ALL_DATASET:
+    train_set, test_set = train_test_split(
+        dataImages, test_size=0.33, random_state=1331, shuffle=True
+    )
+    dataImages=train_set
+
 
 # progress bar
 widgets = [
@@ -35,7 +48,6 @@ pbar = progressbar.ProgressBar(
     maxval=len(dataImages), widgets=widgets
 ).start()
 
-dataset = list()
 
 for (i, path) in enumerate(dataImages):
     pathSplitted = path.split(os.path.sep)[-2].split('_')
@@ -53,15 +65,15 @@ aap = AspectAwarePreprocessor(224, 224)
 
 
 # loop over images
-for dType in types:
+for dType,modelPath in types:
     print('[INFO]: Working with {} ...'.format(dType))
-    extractor = Extractor(dType)
+    extractor = Extractor(dType,path=modelPath)
     db = []
     widgets = [
-        "Extracting features: ", progressbar.Percentage(), " ",
+        "Extracting features ... ", progressbar.Percentage(), " ",
         progressbar.Bar(), " ", progressbar.ETA()
     ]
-    pbar = progressbar.ProgressBar(maxval=len(dataImages), widgets=widgets).start()
+    pbar = progressbar.ProgressBar(maxval=len(dataset), widgets=widgets).start()
 
     index = 0
 
@@ -129,20 +141,35 @@ for dType in types:
         pbar.update(index)
     pbar.finish()
 
+    #SAVING DB IN PKG FOR PYTHON TESTS
 
+    with open('./features/'+ dType + '_features.pck', 'wb') as fp:
+        pickle.dump(db, fp)
 
+    #SAVING TEST_SET IF REQUIRED
+
+    if not ALL_DATASET:
+        with open('./features/test_set.pck', 'wb') as fp:
+            pickle.dump(test_set, fp)
+
+    
+    #TODO DA RIVEDERE
     #CREATING SQL LITE DATABASE
 
     con = sqlite3.connect("../models/src/main/assets/databases/"+dType+"_db.sqlite")
     cur = con.cursor()
 
-    sql_create_table = """ CREATE TABLE IF NOT EXISTS monuments (monument, features) """
+    cur.execute("DROP TABLE IF EXISTS monuments")
 
-    cur.execute(sql_create_table)
+    cur.execute(""" CREATE TABLE monuments (monument, features) """)
 
-    l = len(db)
+    widgets = [
+        "Saving database ... ", progressbar.Percentage(), " ",
+        progressbar.Bar(), " ", progressbar.ETA()
+    ]
+    pbar = progressbar.ProgressBar(maxval=len(db), widgets=widgets).start()
 
-    for matrix,m in db:
+    for i, (matrix,m) in enumerate(db):
         # Insert a row of data
         val = str(matrix)
 
@@ -152,8 +179,10 @@ for dType in types:
 
         # Save (commit) the changes
         con.commit()
+        pbar.update(i)
 
     con.close()
+    pbar.finish()
 
 print("DB Saved in " + os.path.realpath('../models/src/main/assets/databases'))
 

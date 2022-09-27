@@ -19,15 +19,14 @@ class Retrievor:
     def __load_compressor(self, compressor):
         with open(compressor, 'rb') as fp:
             features = pickle.load(fp)
-        styles = [f[2] for f in features]
-        colors = [f[1] for f in features]
+        name = [f[1] for f in features]
         matrix = [f[0] for f in features]
         self.matrix = np.array(matrix)
-        self.colors = np.array(colors)
-        self.styles = np.array(styles)
+        self.names = np.array(name)
+        self.faissIndex = None
 
 
-    def compute_distance(self, vector, distance='cosinus'):
+    def compute_distance(self, vector, distance='euclidean'):
         v = vector.reshape(1, -1)
         if distance == 'cosinus':
             return cosine_similarity(self.matrix, v)
@@ -36,7 +35,7 @@ class Retrievor:
         elif distance == 'euclidean':
             return euclidean_distances(self.matrix, v)
 
-    def search(self, wanted, distance='cosinus', depth=1):
+    def search(self, wanted, distance='euclidean', depth=1):
         distances = self.compute_distance(wanted, distance).flatten()
         nearest_ids = np.argsort(distances)[:depth].tolist()
 
@@ -47,68 +46,52 @@ class Retrievor:
         print("Expected comparisons: ", 1.4*n*log(n))
 
         return [
-            self.colors[nearest_ids].tolist(),
-            self.styles[nearest_ids].tolist(),
+            self.names[nearest_ids].tolist(),
             distances[nearest_ids].tolist()
         ]
 
-    def searchFAISS(self, wanted, distance='cosinus', depth=1):
+    def searchFAISS(self, wanted, distance='euclidean', depth=1):
 
         wanted = np.array([wanted])
 
         #FAISS
 
-        d = self.matrix.shape[1]
         k = depth
 
-       
-        index = faiss.IndexFlatL2(d)  # the other index
-        assert index.is_trained
+        if(self.faissIndex == None):
+            d = self.matrix.shape[1]
+            self.faissIndex = faiss.IndexFlatL2(d)  # the other index
+            self.faissIndex.add(self.matrix)                  # add may be a bit slower as well
 
-        index.add(self.matrix)                  # add may be a bit slower as well
-
-        start = time.time()
-        D, I = index.search(wanted, k)     # actual search
-        end = time.time()
-        print("Searching Time: ", end - start)
+        D, I = self.faissIndex.search(wanted, k)     # actual search
 
 
         return [
-            self.colors[I].tolist(),
-            self.styles[I].tolist(),
+            self.names[I].tolist(),
             D
         ]
 
-    def searchFAISS2(self, wanted, distance='cosinus', depth=1):
+    def searchFAISS2(self, wanted, distance='euclidean', depth=1):
 
         wanted = np.array([wanted])
 
         #FAISS
 
-        d = self.matrix.shape[1]
         k = depth
-        nlist = 100
-       
-        quantizer = faiss.IndexFlatL2(d)  # the other index
-        index = faiss.IndexIVFFlat(quantizer, d, nlist, faiss.METRIC_L2)
 
-        assert not index.is_trained
-        start = time.time()
-        index.train(self.matrix)
-        end = time.time()
-        assert index.is_trained
+        if(self.faissIndex == None):
+            d = self.matrix.shape[1]
+            nlist = 50
+            quantizer = faiss.IndexFlatL2(d)  # the other index
+            self.faissIndex = faiss.IndexIVFFlat(quantizer, d, nlist, faiss.METRIC_L2)
 
-        print("Training Time: ", end - start)
+            self.faissIndex.train(self.matrix)
+            self.faissIndex.add(self.matrix)                  # add may be a bit slower as well
 
-        index.add(self.matrix)                  # add may be a bit slower as well
-
-        start = time.time()
-        D, I = index.search(wanted, k)     # actual search
-        end = time.time()
-        print("Searching Time: ", end - start)
+        D, I = self.faissIndex.search(wanted, k)     # actual search
+   
 
         return [
-            self.colors[I].tolist(),
-            self.styles[I].tolist(),
+            self.names[I].tolist(),
             D
         ]
