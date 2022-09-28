@@ -51,36 +51,6 @@ JNICALL stringFromJNI(JNIEnv *env, jclass clazz,jfloatArray imgFeatures,jobjectA
     }
 
 
-
-
-
-    //INDEX SAVE
-    //LOGI("save...");
-    //please apply for sdcard permission before writing
-    //faiss::write_index(index, name_faiss.c_str());
-    //LOGI("save ");
-    //delete index;
-
-    /*
-    //INDEX RESUME
-    LOGI("read ... ");
-    faiss::Index *tmp = faiss::read_index(name_faiss.c_str(), faiss::IO_FLAG_MMAP);
-    LOGI("read ok");
-    //null point check
-    index = (faiss::IndexFlatL2 *) tmp;
-
-    LOGI("index->d=%d", index->d);
-
-
-    float read[FEATURE_COUNT] = {0};
-    index->reconstruct(index->ntotal - 1, read);
-
-    for (int i = 0; i < FEATURE_COUNT; i++) {
-        LOGI("read[%d] %f %f", i, data[i], read[i]);
-    }
-     */
-
-
     //SEARCHING
     const int64_t destCount = k; //k
 
