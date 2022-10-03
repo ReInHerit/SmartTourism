@@ -100,8 +100,10 @@ for dType,model_path in types:
         image = cv2.imread(path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
+        # PREPROCESSING
+
         startPreprocess = time.time()
-        # Preprocess image
+        
         image,image1,image2 = aap.preprocessAugumentation(image,0.5,0.3)
 
         image = iap.preprocess(image)
@@ -112,9 +114,8 @@ for dType,model_path in types:
 
         preprocessTime += endPreprocess - startPreprocess
 
-        #print("Preprocess Time: " + str(endPreprocess-startPreprocess))
-    
-        
+        # INFERENCE
+
         startRecognize = time.time()
 
         features = extractor.extract(image)
@@ -125,9 +126,7 @@ for dType,model_path in types:
 
         inferenceTime += endRecognize - startRecognize
 
-        #print("Inference Time: " + str(endRecognize-startRecognize))
-
-        #print("FAISS SEARCH: ")
+        # FAISS
 
         startFaiss = time.time()
 
@@ -139,9 +138,7 @@ for dType,model_path in types:
 
         faissTime += endFaiss - startFaiss
 
-
-        #print("Faiss Search Time: " + str(endFaiss-startFaiss))
-
+        # POST PROCESS
 
         startPostProcess = time.time()
 
@@ -188,11 +185,6 @@ for dType,model_path in types:
                 secondValue = valueList[1]
                 secondResult = keyList[1]
 
-                #if firstValue == secondValue:
-                #    app = firstResult
-                #    firstResult = secondResult
-                #    secondResult = app
-    
                 if len(sorted_dict) > 2:
                     thirdResult = keyList[2]
                     secondValue = valueList[2]
@@ -204,6 +196,7 @@ for dType,model_path in types:
 
         postprocessTime += endPostProcess - startPostProcess
 
+        # CHECKING RESULTS
 
         if(str(firstResult) == correctMonument):
             correct += 1
@@ -212,13 +205,6 @@ for dType,model_path in types:
                 correct += 1
             else:
                 correctSecond += 1
-            #print("SECOND CORRECT")
-            #print("resultNormal: ", result)
-            #print("resultZoom1: ", result1)
-            #print("resultZoom2: ", result2)
-            #print("Sorted: ", str(sorted_dict))
-            #print("Final result: ", str(firstResult))
-            #print("Correct: ", correctMonument)
         elif (len(sorted_dict) > 2 and str(thirdResult) == correctMonument):
             if firstValue == thirdResult:
                 correct += 1
@@ -226,22 +212,10 @@ for dType,model_path in types:
                 correctSecond += 1
             else:
                 correctThird += 1
-            #print("THIRD CORRECT")
-            #print("resultNormal: ", result)
-            #print("resultZoom1: ", result1)
-            #print("resultZoom2: ", result2)
-            #print("Sorted: ", str(sorted_dict))
-            #print("Final result: ", str(firstResult))
-            #print("Correct: ", correctMonument)
         elif firstResult == None:
             notRecognized += 1
         else:
             wrong += 1
-            #print("ERROR")
-            #print("Result[]: ", str(result))
-            #print("Sorted: ", str(sorted_dict))
-            #print("Final result: ", str(firstResult))
-            #print("Correct: ", correctMonument)
 
         pbar.update(i)
     pbar.finish()

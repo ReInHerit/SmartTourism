@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import glob
 import argparse
+from preprocessors.aspectawarepreprocessor import printIMG
 import progressbar
 import numpy as np
 from scripts import Extractor
@@ -128,6 +129,7 @@ for dType,modelPath in types:
 
         for t in tiles:
             t = aap.preprocess(t)
+
             #toArray preprocess
             t = iap.preprocess(t)
             featuresTile = extractor.extract(t)
