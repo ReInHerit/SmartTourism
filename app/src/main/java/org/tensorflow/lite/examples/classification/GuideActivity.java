@@ -68,40 +68,57 @@ public class GuideActivity extends AppCompatActivity {
         loadGuidefromFile("guides/" + monumentId + "/" + language + "/testo.txt");
 
 
-        String pathVideo = "android.resource://" + getPackageName() + "/";
-        String pathAudio = "guides/" + monumentId + "/" + language + "/audio.mp3";
+        //String pathVideo = "android.resource://" + getPackageName() + "/";
+        String pathVideo = "https://dl.dropboxusercontent.com/s/";
+        //String pathAudio = "guides/" + monumentId + "/" + language + "/audio.mp3";
+        String pathAudio = "https://dl.dropboxusercontent.com/s/";
 
 
         switch (monumentId) {
             case "Cattedrale Duomo":
-                if (language.equals("English"))
-                    pathVideo += R.raw.duomo_english;
-                else
-                    pathVideo += R.raw.duomo_italian;
+                if (language.equals("English")) {
+                    pathVideo += "ldt7ng0eaxog55s/duomo_english.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }else {
+                    pathVideo += "ee3n2s3uls7ryhv/duomo_italian.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }
                 break;
             case "Campanile Giotto":
-                if (language.equals("English"))
-                    pathVideo += R.raw.giotto_english;
-                else
-                    pathVideo += R.raw.giotto_italian;
+                if (language.equals("English")) {
+                    pathVideo += "kxxuxmdkyxgr9it/giotto_english.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }else {
+                    pathVideo += "3ivnh9a9lfeeyjs/giotto_italian.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }
                 break;
             case "Battistero SanGiovanni":
-                if (language.equals("English"))
-                    pathVideo += R.raw.battistero_english;
-                else
-                    pathVideo += R.raw.battistero_italian;
+                if (language.equals("English")) {
+                    pathVideo += "5lwaewd7bk86mlf/battistero_english.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }else {
+                    pathVideo += "g0pu1i6fsawkzmm/battistero_italian.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }
                 break;
             case "Loggia Bigallo":
-                if (language.equals("English"))
-                    pathVideo += R.raw.loggia_english;
-                else
-                    pathVideo += R.raw.loggia_italian;
+                if (language.equals("English")) {
+                    pathVideo += "ksabtl8jtaeftcb/loggia_english.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }else {
+                    pathVideo += "oxn2kxthnlgyd9a/loggia_italian.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }
                 break;
             case "Palazzo Vecchio":
-                if (language.equals("English"))
-                    pathVideo += R.raw.palazzo_english;
-                else
-                    pathVideo += R.raw.palazzo_italian;
+                if (language.equals("English")) {
+                    pathVideo += "ob5asd114e7o8jm/palazzo_english.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }else {
+                    pathVideo += "x44z7eckei4dysm/palazzo_italian.mp4";
+                    pathAudio += "ujmvjjwy7s4iode/audio.mp3";
+                }
                 break;
             default:
                 break;
@@ -116,6 +133,7 @@ public class GuideActivity extends AppCompatActivity {
         VideoView videoView = findViewById(R.id.videoView);
         Uri uriVideo = Uri.parse(pathVideo);
         videoView.setVideoURI(uriVideo);
+        //videoView.setVideoPath(pathVideo);
 
         MediaController mediaController = new MediaController(this);
         //mediaController.setMediaPlayer(videoView);
@@ -126,10 +144,11 @@ public class GuideActivity extends AppCompatActivity {
         //videoView.start();
 
         Button playBtn = findViewById(R.id.idBtnPlay);
+        String finalPathAudio = pathAudio;
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playAudio(pathAudio);
+                playAudio(finalPathAudio);
             }
         });
     }
@@ -181,8 +200,8 @@ public class GuideActivity extends AppCompatActivity {
             mediaPlayer = new MediaPlayer();
             //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
-                AssetFileDescriptor afd = getAssets().openFd(pathAudio);
-                mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                //AssetFileDescriptor afd = getAssets().openFd(pathAudio);
+                mediaPlayer.setDataSource(pathAudio);
                 mediaPlayer.prepare();
             } catch (IOException e) {
                 e.printStackTrace();
