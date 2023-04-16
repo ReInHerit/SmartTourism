@@ -1,23 +1,10 @@
-<a name="readme-top"></a>
+# Smart Tourism app
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/lorenzo-massa/SmartTourism">
-    <img src="images/logo_1.png" alt="Logo" width="400" height="80">
-  </a>
+This application is part of the ReInHerit Toolkit.
 
-  <p align="center">
-    Image recognition for android devices
-    <br />
-    <a href="https://github.com/lorenzo-massa/SmartTourism"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/lorenzo-massa/SmartTourism/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/lorenzo-massa/SmartTourism/issues">Request Feature</a>
-  </p>
-</div>
+![ReInHerit Smart Tourism logo](images/smarttourism_logo.jpg "ReInHerit Smart Tourism logo")
+
+## Smart Tourism app for Android devices
 
 ## Getting Started
 <div align="center">
@@ -27,7 +14,7 @@
 ### APK
 You will find the APK in `app/build/outputs/apk/support/debug` . 
 
-If you wanto to generate another APK file take a look on the following guide: https://code.tutsplus.com/tutorials/how-to-generate-apk-and-signed-apk-files-in-android-studio--cms-37927
+If you want to generate another APK file take a look on the following guide: https://code.tutsplus.com/tutorials/how-to-generate-apk-and-signed-apk-files-in-android-studio--cms-37927
 
 ### Guide
 The repository consists of two parts:
@@ -37,7 +24,7 @@ The repository consists of two parts:
 The python part is used to generate sqlite files from an image dataset. You should use and edit this part only if you want to use another neural network or image dataset.
 The android application is ready to use and you should change it just to add files to the monuments guides.
 
-You will find all the instuction you need just below.
+You will find all the instructions you need just below.
 
 ### Prerequisites
 
@@ -189,19 +176,10 @@ if (model == Classifier.Model.MOBILENET_V3_LARGE_100) {
     </string-array>
 ```
 
-IMORTANT: The model name must be the same as entered in step 2) of this paragraph, capitalization not required.
+**IMPORTANT**: The model name must be the same as entered in step 2) of this paragraph, capitalization not required.
 Once you have completed these steps you can use the new model by selecting it directly in the application menu.
 
 
-<!-- CONTACT -->
-## Contact
-
-Lorenzo Massa - lorenzo.massa@stud.unifi.it
-
-Project Link: [https://github.com/lorenzo-massa/SmartTourism](https://github.com/lorenzo-massa/SmartTourism)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
+### Acknowledgments
+Lorenzo Massa
 
